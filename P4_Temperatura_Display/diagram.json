@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "author": "Cristian Carrera 2024-1932 - ITLA",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-uno", "id": "uno", "top": 100, "left": 0, "attrs": {} },
+
+    { "type": "wokwi-dht22", "id": "dht", "top": -60, "left": -180, "attrs": {} },
+
+    { "type": "wokwi-lcd1602", "id": "lcd", "top": -200, "left": 100,
+      "attrs": { "pins": "full" } },
+    { "type": "wokwi-potentiometer", "id": "pot", "top": -60, "left": 340,
+      "attrs": { "value": "50" } },
+
+    { "type": "wokwi-rgb-led", "id": "rgb", "top": 340, "left": 120,
+      "attrs": { "common": "cathode" } },
+    { "type": "wokwi-resistor", "id": "rR", "top": 340, "left": 240, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "rG", "top": 390, "left": 240, "attrs": { "value": "220" } },
+    { "type": "wokwi-resistor", "id": "rB", "top": 440, "left": 240, "attrs": { "value": "220" } },
+
+    { "type": "wokwi-buzzer", "id": "bz", "top": 340, "left": -180,
+      "attrs": { "volume": "0.1" } }
+  ],
+  "connections": [
+    [ "dht:VCC", "uno:5V",    "red",   [] ],
+    [ "dht:GND", "uno:GND.1", "black", [] ],
+    [ "dht:SDA", "uno:2",     "green", [] ],
+
+    [ "lcd:VSS", "uno:GND.2", "black", [] ],
+    [ "lcd:VDD", "uno:5V",    "red",   [] ],
+    [ "lcd:V0",  "pot:SIG",   "gray",  [] ],
+    [ "lcd:RW",  "uno:GND.2", "black", [] ],
+    [ "lcd:A",   "uno:5V",    "red",   [] ],
+    [ "lcd:K",   "uno:GND.2", "black", [] ],
+    [ "lcd:RS",  "uno:A0",    "blue",  [] ],
+    [ "lcd:E",   "uno:A1",    "blue",  [] ],
+    [ "lcd:D4",  "uno:A2",    "cyan",  [] ],
+    [ "lcd:D5",  "uno:A3",    "cyan",  [] ],
+    [ "lcd:D6",  "uno:A4",    "cyan",  [] ],
+    [ "lcd:D7",  "uno:A5",    "cyan",  [] ],
+
+    [ "pot:VCC", "uno:5V",    "red",   [] ],
+    [ "pot:GND", "uno:GND.3", "black", [] ],
+
+    [ "uno:5",  "rR:1",      "red",    [] ],
+    [ "rR:2",   "rgb:R",     "red",    [] ],
+    [ "uno:6",  "rG:1",      "green",  [] ],
+    [ "rG:2",   "rgb:G",     "green",  [] ],
+    [ "uno:9",  "rB:1",      "blue",   [] ],
+    [ "rB:2",   "rgb:B",     "blue",   [] ],
+    [ "rgb:COM","uno:GND.3", "black",  [] ],
+
+    [ "uno:8",  "bz:1",      "purple", [] ],
+    [ "bz:2",   "uno:GND.1", "black",  [] ]
+  ],
+  "dependencies": {}
+}
