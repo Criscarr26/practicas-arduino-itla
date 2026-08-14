@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "author": "Cristian Carrera 2024-1932 - ITLA",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+
+    { "type": "wokwi-dht22", "id": "dht", "top": -180, "left": -240, "attrs": {} },
+
+    { "type": "wokwi-photoresistor-sensor", "id": "ldr", "top": 40, "left": -240,
+      "attrs": {} },
+
+    { "type": "wokwi-hc-sr04", "id": "sonar", "top": -180, "left": 200,
+      "attrs": { "distance": "120" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "" ],
+    [ "esp:RX", "$serialMonitor:TX", "" ],
+
+    [ "dht:VCC", "esp:3V3",   "red",   [] ],
+    [ "dht:GND", "esp:GND.1", "black", [] ],
+    [ "dht:SDA", "esp:15",    "green", [] ],
+
+    [ "ldr:VCC", "esp:3V3",   "red",    [] ],
+    [ "ldr:GND", "esp:GND.1", "black",  [] ],
+    [ "ldr:AO",  "esp:34",    "orange", [] ],
+
+    [ "sonar:VCC",  "esp:5V",    "red",   [] ],
+    [ "sonar:GND",  "esp:GND.2", "black", [] ],
+    [ "sonar:TRIG", "esp:5",     "green", [] ],
+    [ "sonar:ECHO", "esp:18",    "blue",  [] ]
+  ],
+  "dependencies": {}
+}
