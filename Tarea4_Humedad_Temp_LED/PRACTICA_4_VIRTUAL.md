@@ -193,7 +193,7 @@ El **display alterna dos pantallas** cada segundo para caber en 16×2 sin recort
 
 ## 8. Código Arduino
 
-**Archivo completo:** [`P4_Temperatura_Display.ino`](P4_Temperatura_Display.ino)
+**Archivo completo:** [`Tarea4_Humedad_Temp_LED.ino`](Tarea4_Humedad_Temp_LED.ino)
 
 **El corazón — la jerarquía de alarma en un solo sitio:**
 
@@ -245,7 +245,7 @@ const uint8_t PATRON_SOS[] = { 1,1,1,1,1,3,  3,1,3,1,3,3,  1,1,1,1,1,7 };
 ## 10. Ejecución del simulador
 
 1. **wokwi.com** → **New Project** → **Arduino Uno**.
-2. Pegar `P4_Temperatura_Display.ino` en la pestaña del sketch.
+2. Pegar `Tarea4_Humedad_Temp_LED.ino` en la pestaña del sketch.
 3. Pegar el `diagram.json` de esta carpeta en su pestaña.
 4. **Library Manager** (`+`) → añadir **DHT sensor library** y **Adafruit Unified Sensor**.
 5. **Start Simulation**.
@@ -317,8 +317,8 @@ Para el **video**: un recorrido continuo subiendo la temperatura de 36 a 40, lue
 | Forma | Qué subir |
 |---|---|
 | **A** | Las 6 capturas + el video |
-| **B** | Pegar `P4_Temperatura_Display.ino` en el Editor |
-| **C** | Adjuntar `P4_Temperatura_Display.ino` |
+| **B** | Pegar `Tarea4_Humedad_Temp_LED.ino` en el Editor |
+| **C** | Adjuntar `Tarea4_Humedad_Temp_LED.ino` |
 
 **Los tres puntos que conviene defender:**
 

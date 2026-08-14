@@ -143,8 +143,8 @@ itla/2024-1932/practica5/sensores
 
 | Archivo | Qué es |
 |---|---|
-| [`P5_Virtual_ESP32/P5_Virtual_ESP32.ino`](P5_Virtual_ESP32/P5_Virtual_ESP32.ino) | Firmware del ESP32 |
-| [`P5_Virtual_ESP32/diagram.json`](P5_Virtual_ESP32/diagram.json) | Montaje para Wokwi |
+| [`Tarea5_Virtual_ESP32/Tarea5_Virtual_ESP32.ino`](Tarea5_Virtual_ESP32/Tarea5_Virtual_ESP32.ino) | Firmware del ESP32 |
+| [`Tarea5_Virtual_ESP32/diagram.json`](Tarea5_Virtual_ESP32/diagram.json) | Montaje para Wokwi |
 | [`receptor_mqtt.py`](receptor_mqtt.py) | Receptor en Python |
 
 **La validación en Python** — nunca confiar en lo que llega de la red:
@@ -178,7 +178,7 @@ Ya explicado en la sección 2.2: **Arduino Cloud no tiene simulador** ([docs ofi
 **Orden importante: primero Wokwi, después Python.**
 
 1. **wokwi.com** → **New Project** → **ESP32**.
-2. Pegar `P5_Virtual_ESP32.ino` y el `diagram.json`.
+2. Pegar `Tarea5_Virtual_ESP32.ino` y el `diagram.json`.
 3. **Library Manager** → añadir `DHT sensor library`, `Adafruit Unified Sensor` y `PubSubClient`.
 4. **Start Simulation.** Esperar a ver en el monitor serie:
    ```
@@ -261,7 +261,7 @@ Para el **video**: mover un deslizador en Wokwi y mostrar cómo el número cambi
 | Forma | Qué subir |
 |---|---|
 | **A** | Las 5 capturas + el video |
-| **B** | Pegar `P5_Virtual_ESP32.ino` en el Editor |
+| **B** | Pegar `Tarea5_Virtual_ESP32.ino` en el Editor |
 | **C** | Adjuntar el `.ino` **y** `receptor_mqtt.py` |
 
 Sube también `datos_practica5.csv` y `grafica_practica5.png`: son la evidencia de que corrió de verdad.

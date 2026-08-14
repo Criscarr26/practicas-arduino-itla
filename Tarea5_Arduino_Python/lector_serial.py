@@ -295,7 +295,7 @@ def main():
         graficar(filas, columnas)
     else:
         print("\nNo se recibio ninguna lectura valida.")
-        print("Comprueba que la placa tenga cargado P5_Arduino_Python.ino")
+        print("Comprueba que la placa tenga cargado Tarea5_Fisico_Serial.ino")
         print("y que los baudios coincidan en los dos extremos.")
 
 

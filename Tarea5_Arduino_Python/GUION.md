@@ -6,7 +6,7 @@
 
 ## Antes de grabar
 
-1. Carga `P5_Arduino_Python.ino` en la placa desde el Arduino IDE.
+1. Carga `Tarea5_Fisico_Serial.ino` en la placa desde el Arduino IDE.
 2. **CIERRA el Monitor Serie del IDE.** El puerto solo admite un programa a la vez; si el IDE
    lo tiene abierto, Python dará «Acceso denegado». Es el fallo más común de esta práctica.
 3. Instala las dependencias:
@@ -170,8 +170,8 @@ Un detalle que suma:
 | Forma | Qué subir |
 |---|---|
 | **A** | Este video + capturas de la terminal, la gráfica y el CSV en Excel |
-| **B** | Copiar y pegar `P5_Arduino_Python.ino` en el Editor de la plataforma |
-| **C** | Adjuntar `P5_Arduino_Python.ino` **y** `lector_serial.py` |
+| **B** | Copiar y pegar `Tarea5_Fisico_Serial.ino` en el Editor de la plataforma |
+| **C** | Adjuntar `Tarea5_Fisico_Serial.ino` **y** `lector_serial.py` |
 
 > Sube también el `datos_arduino.csv` y la `grafica_arduino.png` que genera el programa: son
 > la evidencia de que corrió de verdad.

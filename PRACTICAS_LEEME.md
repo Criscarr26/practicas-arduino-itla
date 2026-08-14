@@ -1,146 +1,166 @@
-# Prácticas de laboratorio — IA e IoT 2026-C-2
+# Entregables — IA e IoT 2026-C-2
 
 **Cristian Carrera — 2024-1932 — 20241932@itla.edu.do — Prof. Luis Bessewell Feliz**
-Placa: **Elegoo UNO R3** (Super Starter Kit)
 
 📦 **Repositorio público:** https://github.com/Criscarr26/practicas-arduino-itla
 
 ---
 
-## Las cinco prácticas
+## ⚠️ Léelo antes de subir nada
 
-| # | Carpeta | Qué hace | Valor |
-|---|---|---|---|
-| 1 | `P1_Mario_LED_Tono/` | Melodía de Super Mario Bros con luz sincronizada | — |
-| 2 | `P2_SOS_LED_Tono/` | S.O.S. en código Morse con luz y sonido | — |
-| 3 | `P3_Distancia_Motor/` | HC-SR04 que gobierna servo, LED y buzzer por rangos | 8 pts |
-| 4 | `P4_Temperatura_Display/` | DHT11 + LED RGB + alarma + LCD1602 (opción D) | 8 pts |
-| 5 | `P5_Arduino_Python/` | Arduino sensa, Python recibe, guarda y grafica | 8 pts |
+Las carpetas están nombradas **según la numeración del aula virtual**, no según el orden en que
+se desarrollaron. Ojo con esto, porque la 1 y la 2 son al revés de lo que uno esperaría:
 
-Cada carpeta trae el `.ino`, un `diagram.json` para el simulador y un **`GUION.md`** con el
-texto para grabarte explicando el código.
+> **Tarea 1era = S.O.S.** · **Tarea 2da = Mario Bros**
+
+Cada carpeta se llama igual que la tarea a la que va. Si subes `Tarea1_SOS_LED_Audio` a la
+«1era. Asignación Práctica de Laboratorio», estás bien.
 
 ---
 
-## Dos avisos importantes sobre tu placa
+## Mapa: aula virtual → carpeta
 
-**1. El UNO R3 no sirve para Arduino IoT Cloud.** No tiene conectividad, así que no puede
-crear un *Thing* ni un dashboard. Lo que sí puedes usar es:
+### Retos
 
-- **Cloud Editor** (`app.arduino.cc`) → compilar y cargar desde el navegador. Requiere instalar
-  el *Arduino Create Agent*. El UNO R3 sí está soportado aquí.
-- **Wokwi** (`wokwi.com`) → el emulador. Pega el `.ino` y el `diagram.json` de cada carpeta.
-- **Arduino IDE de escritorio** → la ruta normal, y la más cómoda para el hardware físico.
+| En la plataforma | Carpeta | Estado |
+|---|---|---|
+| **Reto 1era** — Encender y Apagar Luz LED | `Reto1_Encender_Apagar_LED/` | ✅ listo |
+| **Reto 2da** — S.O.S con luz LED y audio | usa `Tarea1_SOS_LED_Audio/` | ✅ mismo contenido |
 
-Como el enunciado dice *«Arduino Cloud de forma virtual con su emulador **o** su propio Arduino
-y Arduino IDE de forma física»*, con tu UNO R3 la segunda opción es la que aplica de verdad. Te
-dejo igual el `diagram.json` de cada práctica por si quieres mostrar también la simulación.
+> El Reto 2 y la Tarea 1era piden lo mismo. Puedes subir el mismo sketch a ambos; el de la
+> Tarea 1era está más documentado.
 
-**2. El LCD1602 de tu kit es de pines paralelos, sin adaptador I2C.** Por eso la práctica 4 usa
-la librería `LiquidCrystal` (incluida en el IDE) y **no** `LiquidCrystal_I2C`. Y necesita el
-potenciómetro de 10k para el contraste: sin él la pantalla se ve en blanco y parece que el
-código falla.
+### Prácticas (las que tienen puntuación)
+
+| En la plataforma | Carpeta | Valor |
+|---|---|---|
+| **Tarea 1era** — S.O.S con luz LED y audio | `Tarea1_SOS_LED_Audio/` | — |
+| **Tarea 2da** — Música Mario Bros con luz LED y audio | `Tarea2_Mario_LED_Audio/` | — |
+| **Tarea 3era** — Detector o Medidor de Distancia / Temperatura | `Tarea3_Distancia_Motor/` | 8 pts |
+| **Tarea 4ta** — Distancia, Humedad, Temperatura, Colores LED | `Tarea4_Humedad_Temp_LED/` | 8 pts |
+| **Tarea 5ta** — Lectura de Datos Sensados vía otro lenguaje | `Tarea5_Arduino_Python/` | 8 pts |
 
 ---
 
-## Librerías a instalar
+## Qué hay en cada carpeta
 
-Desde el IDE: **Programa → Incluir Librería → Administrar Bibliotecas**
-
-| Práctica | Librería |
+| Archivo | Para qué sirve |
 |---|---|
-| 1 y 2 | ninguna |
-| 3 | `Servo` (ya viene incluida) |
-| 4 | `DHT sensor library` de Adafruit + `Adafruit Unified Sensor` |
-| 5 | `DHT sensor library` (Arduino) y `pip install pyserial matplotlib` (Python) |
+| `*.ino` | El código. **Es el que se adjunta y se pega en el Editor** |
+| `diagram.json` | El montaje, para pegar en Wokwi. No se entrega |
+| `GUION.md` | Texto para grabarte explicando el código |
+| `PRACTICA_*_VIRTUAL.md` | Documento de 15 secciones (solo tareas 3, 4 y 5) |
+
+`MATRIZ_CUMPLIMIENTO.md`, en la raíz, dice requisito por requisito qué está verificado y qué
+está pendiente de que lo ejecutes.
+
+---
+
+## Cómo pasarlo a Wokwi (4 pasos por tarea)
+
+1. **wokwi.com** → **New Project** → elegir placa:
+   - **Arduino UNO** para Reto 1, Tareas 1, 2, 3 y 4
+   - **ESP32** para la Tarea 5 (necesita WiFi)
+2. Pegar el contenido del `.ino` en la pestaña del sketch.
+3. Pegar el `diagram.json` en la pestaña de ese nombre. El montaje aparece cableado.
+4. **Start Simulation**.
+
+**Librerías** (solo tareas 4 y 5): en el botón `+` del Library Manager añadir
+`DHT sensor library`, `Adafruit Unified Sensor` y, para la 5, `PubSubClient`.
+
+> Si sale *«Build Servers Busy»* no es tu código: es la cola gratuita de Wokwi. Cierra y
+> reintenta en unos minutos.
+
+---
+
+## Nota sobre Arduino Cloud
+
+**Arduino Cloud no tiene simulador.** Sus módulos son Sketches, Things, Dashboards, Triggers,
+OTA y Webhooks — ninguno simula hardware ([docs oficiales](https://docs.arduino.cc/arduino-cloud/)).
+Y el **UNO R3 tampoco es compatible con Arduino IoT Cloud** por no tener conectividad.
+
+Lo que sí ofrece es el **Cloud Editor**, que compila desde el navegador. Para simular de verdad
+el camino es **Wokwi** (el facilitador mencionó Tinkercad, que es la misma categoría de
+herramienta).
+
+---
+
+## Qué falta, y es tuyo
+
+| Tarea | Cuánto |
+|---|---|
+| Cargar en Wokwi y comprobar que **compila** | 6 sketches |
+| Ejecutar los **casos de prueba** | 25 casos (tareas 3, 4 y 5) |
+| Tomar **capturas** | 17 |
+| Grabar **videos** | 3 a 5 |
+
+Cada entrega pide **tres formas**: (A) imágenes o video, (B) el código pegado en el Editor de la
+plataforma, y (C) el archivo `.ino` adjunto.
 
 ---
 
 ## Videos de referencia
 
-Los busqué y **comprobé uno por uno** el 7 de agosto de 2026: existen, son públicos y tratan el
-tema. Casi todos en español.
+Comprobados uno por uno el 7 de agosto de 2026: existen, son públicos y tratan el tema.
 
-### Para empezar: el IDE y el montaje básico
+### Para empezar
 
-- [Arduino desde cero — Cap. 2: instalación del IDE y primer programa](https://www.youtube.com/watch?v=GUuWgk3dXd0) — bitwiseAr
-- [Arduino desde cero — Cap. 3: entradas/salidas digitales con pulsador y LED](https://www.youtube.com/watch?v=BWhup75svIk) — bitwiseAr
-- [Arduino desde cero — Cap. 55: buzzers activo y pasivo, tonos y melodías](https://www.youtube.com/watch?v=UQsixwoX5EQ) — bitwiseAr ← **empieza por este**
-- [Instalar Arduino IDE para principiantes](https://www.youtube.com/watch?v=YVHKEFxpmU4) — Robotics Space NV
-- [Tutorial Arduino IDE: todas sus funciones](https://www.youtube.com/watch?v=PlELXl_UX8w) — ElectronicSpot
+- [Arduino desde cero — Cap. 2: instalación del IDE](https://www.youtube.com/watch?v=GUuWgk3dXd0) — bitwiseAr
+- [Arduino desde cero — Cap. 3: entradas/salidas digitales con LED](https://www.youtube.com/watch?v=BWhup75svIk) — bitwiseAr ← **para el Reto 1**
+- [Arduino desde cero — Cap. 55: buzzers activo y pasivo](https://www.youtube.com/watch?v=UQsixwoX5EQ) — bitwiseAr ← **míralo antes de las tareas 1 y 2**
 
-### Práctica 1 — Mario Bros
+### Tarea 1era — S.O.S. en Morse
 
-- [Melodía de Super Mario Bros con Buzzer y Arduino — TUTORIAL](https://www.youtube.com/watch?v=tJgaZJyQqyw) — Ruben González
-- [Melodía de Mario Bros con Buzzer Pasivo — Clase N°16](https://www.youtube.com/watch?v=dF_uaWd5f14) — D'_Electronic
-- [Arduino tocando Mario Bros | Buzzer + Tinkercad](https://www.youtube.com/watch?v=iMKB9YEg33c) — santiago escobar
-- [Super Mario song with buzzer, LED and Arduino](https://www.youtube.com/watch?v=urTC2JcGJhs) — Rocka Craft · inglés ← el único que incluye el LED
-- [Mario Theme Song Using Arduino & Buzzer](https://www.youtube.com/watch?v=VRGvDYJx280) — Techno-E-Solution · inglés (explica `pitches.h`)
-
-### Práctica 2 — S.O.S. en Morse
-
-- [Práctica 5: señal SOS, código morse](https://www.youtube.com/watch?v=kfuxSLlqNv4) — makinando veleztecno
 - [ARDUINO UNO — Código Morse SOS — LED](https://www.youtube.com/watch?v=vNqjuyrh7M8) — Dave D
-- [Cómo hacer un mensaje en código Morse — Arduino](https://www.youtube.com/watch?v=pIu52oniqTY) — Piensa 3D
-- [Código Morse Arduino | entradas y salidas digitales](https://www.youtube.com/watch?v=acZXhxwxqUY) — Electronic Lab
-- [LED and Buzzer S.O.S. in Morse Code with Arduino Uno](https://www.youtube.com/watch?v=ACfUOOKZCHs) — MARIUS Petcu · inglés
+- [Práctica 5: señal SOS, código morse](https://www.youtube.com/watch?v=kfuxSLlqNv4) — makinando veleztecno
+- [Cómo hacer un mensaje en código Morse](https://www.youtube.com/watch?v=pIu52oniqTY) — Piensa 3D
+- [LED and Buzzer S.O.S. in Morse Code](https://www.youtube.com/watch?v=ACfUOOKZCHs) — MARIUS Petcu · inglés
 
-### Práctica 3 — Distancia y motor
+### Tarea 2da — Mario Bros
 
-- [Arduino desde cero — Cap. 5: HC-SR04 sensor ultrasónico](https://www.youtube.com/watch?v=mlw3APOUt8U) — bitwiseAr ← **el mejor para entender el sensor**
-- [if, else, for, while, switch — estructuras de control en Arduino](https://www.youtube.com/watch?v=UGTgpUH9xW8) — Pasión Electrónica
-- [Programación en Arduino, HC-SR04 y librería NewPing](https://www.youtube.com/watch?v=Hs3UX0U1tEU) — Robótica, Impresión 3D y algo más
-- [Alarma de proximidad con Arduino y sensor ultrasónico, LEDs y buzzer](https://www.youtube.com/watch?v=SFzbHsiydv4) — Nicolas Wasyleczko
-- [Carro robot evasor de obstáculos: ultrasónico + servomotor + L298N](https://www.youtube.com/watch?v=I8hKgwnVGqM) — para la parte del motor
+- [Melodía de Super Mario Bros con Buzzer — TUTORIAL](https://www.youtube.com/watch?v=tJgaZJyQqyw) — Ruben González
+- [Melodía de Mario Bros con Buzzer Pasivo — Clase N°16](https://www.youtube.com/watch?v=dF_uaWd5f14) — D'_Electronic
+- [Super Mario song with buzzer, LED and Arduino](https://www.youtube.com/watch?v=urTC2JcGJhs) — inglés ← el único que incluye el LED
 
-### Práctica 4 — Temperatura, humedad y display
+### Tarea 3era — Distancia y motor
 
-**El sensor DHT11:**
+- [Arduino desde cero — Cap. 5: HC-SR04](https://www.youtube.com/watch?v=mlw3APOUt8U) — bitwiseAr ← **el mejor para el sensor**
+- [if, else, for, while, switch en Arduino](https://www.youtube.com/watch?v=UGTgpUH9xW8) — Pasión Electrónica
+- [Alarma de proximidad con ultrasónico, LEDs y buzzer](https://www.youtube.com/watch?v=SFzbHsiydv4) — Nicolas Wasyleczko
+- [Ultrasónico + servomotor + L298N](https://www.youtube.com/watch?v=I8hKgwnVGqM) — para el motor
 
-- [Arduino desde cero — Cap. 7: temperatura y humedad con DHT22 o DHT11](https://www.youtube.com/watch?v=2tdsg_K-oQQ) — bitwiseAr
-- [Cómo utilizar el sensor DHT11 en Arduino](https://www.youtube.com/watch?v=5rJnV9XyoJQ) — David Portilla
-- [Sensor de temperatura y humedad DHT11 — Capítulo #45](https://www.youtube.com/watch?v=huIjJV2B8sA) — Johann Perez E
+### Tarea 4ta — Temperatura, humedad, luz y display
 
-**La pantalla LCD1602 sin I2C** (así es la de tu kit):
+**Sensor DHT:**
+- [Cap. 7: temperatura y humedad con DHT22 o DHT11](https://www.youtube.com/watch?v=2tdsg_K-oQQ) — bitwiseAr
+- [Cómo utilizar el sensor DHT11](https://www.youtube.com/watch?v=5rJnV9XyoJQ) — David Portilla
 
-- [Cómo usar una pantalla LCD 16x2 paso a paso desde cero](https://www.youtube.com/watch?v=zUGuOolVC8A) — Electrónicos por el Mundo ← **el importante**
-- [Cómo usar el sensor DHT11/DHT22 con LCD1602 — Video 21](https://www.youtube.com/watch?v=lvBb1Ue8OJ4) — AlgoBack (junta sensor y pantalla)
+**Pantalla LCD sin I2C:**
+- [Cómo usar una LCD 16x2 paso a paso](https://www.youtube.com/watch?v=zUGuOolVC8A) — Electrónicos por el Mundo ← **clave**
+- [DHT11/DHT22 con LCD1602 — Video 21](https://www.youtube.com/watch?v=lvBb1Ue8OJ4) — AlgoBack
 
-**El LED RGB:**
+**LED RGB:**
+- [Cap. 12: LED RGB, ánodo y cátodo común](https://www.youtube.com/watch?v=xX8_QvwOJ6I) — bitwiseAr
+- [Crea cualquier color con Arduino](https://www.youtube.com/watch?v=6IVFoQRnXeE) — ElectroLab Educativa
 
-- [Arduino desde cero — Cap. 12: LED RGB, ánodo y cátodo común](https://www.youtube.com/watch?v=xX8_QvwOJ6I) — bitwiseAr
-- [Crea cualquier color con Arduino: tutorial LED RGB](https://www.youtube.com/watch?v=6IVFoQRnXeE) — ElectroLab Educativa
-
-**Sensor de luz LDR** (por si eliges la opción C):
-
-- [Arduino desde cero — Cap. 14: sensor crepuscular por LDR](https://www.youtube.com/watch?v=d3zcjfjqFxE) — bitwiseAr
+**Sensor de luz LDR:**
+- [Cap. 14: sensor crepuscular por LDR](https://www.youtube.com/watch?v=d3zcjfjqFxE) — bitwiseAr
 - [Cómo utilizar un sensor de luz LDR](https://www.youtube.com/watch?v=h9wGZssIBOM) — Piensa 3D
-- [Interruptor crepuscular con LDR y Arduino](https://www.youtube.com/watch?v=o2inQJlmiGA) — LSM Tutoriales
-- [Detector de luz y oscuridad con LDR — TinkerCAD](https://www.youtube.com/watch?v=ET2Knx8E970) — Francisco Ramirez
+- [Detector de luz y oscuridad — TinkerCAD](https://www.youtube.com/watch?v=ET2Knx8E970) — Francisco Ramirez
 
-### Práctica 5 — Arduino con Python
+### Tarea 5ta — Arduino con Python
 
-- [PYTHON ARDUINO SERIAL — pyserial — enviar datos de Arduino a Python](https://www.youtube.com/watch?v=RRpEXRyjYUs) — Turbo Código ← **empieza por este**
-- [Visualiza temperatura y humedad en tiempo real con Python y Matplotlib](https://www.youtube.com/watch?v=JJTWqCMy5mg) — Programatumicro
-- [Comunicación por puerto serial y registro de datos con Python y Arduino](https://www.youtube.com/watch?v=EV2kFHPJZy8) — Robótica con Python
-- [Conexión serial Python-Arduino: sensor ultrasónico y potenciómetro](https://www.youtube.com/watch?v=hflgynhudUw) — Python 101
-- [¿Cómo graficar datos de Arduino en tiempo real?](https://www.youtube.com/watch?v=Dkg4cSvqv10) — cctmexico
+- [PYTHON ARDUINO SERIAL — pyserial](https://www.youtube.com/watch?v=RRpEXRyjYUs) — Turbo Código ← **empieza aquí**
+- [Comunicación serial y registro de datos](https://www.youtube.com/watch?v=EV2kFHPJZy8) — Robótica con Python
+- [Graficar datos de Arduino en tiempo real](https://www.youtube.com/watch?v=Dkg4cSvqv10) — cctmexico
+- [Visualiza temperatura y humedad con Python y Matplotlib](https://www.youtube.com/watch?v=JJTWqCMy5mg) — Programatumicro
 
 ---
 
 ## Orden sugerido
 
-1. **Práctica 1 y 2** primero: son las más simples y comparten montaje (buzzer + LED). Grábalas
-   el mismo día sin desmontar nada.
-2. **Práctica 5** después: solo añade sensores al mismo protoboard y no exige lógica nueva.
-3. **Práctica 3** y **4** al final: son las de 8 puntos y las que más cableado piden.
-
----
-
-## Lo que aún tienes que hacer tú
-
-- Montar los circuitos y **grabar los cinco videos** (los guiones ya están escritos).
-- En la práctica 4, **ajustar el contraste del LCD** con el potenciómetro antes de grabar.
-- En la práctica 5, **cerrar el Monitor Serie** del IDE antes de ejecutar el Python.
-- Subir cada entrega en las tres formas que pide el enunciado (video/imágenes, código pegado en
-  el Editor, y el archivo adjunto).
+1. **Reto 1** — 5 minutos, y te sirve de calentamiento con Wokwi.
+2. **Tareas 1 y 2** — comparten montaje (buzzer en el 8 + LED en el 13). Hazlas seguidas sin
+   cambiar el circuito.
+3. **Tarea 5** — con el ESP32, independiente de las demás.
+4. **Tareas 3 y 4** — las de 8 puntos, las que más cableado piden.

@@ -252,7 +252,7 @@ El filtrado del sensor usa **mediana de 5 muestras**, no promedio: el HC-SR04 su
 
 ## 8. Código Arduino
 
-**Archivo completo y listo para copiar:** [`P3_Distancia_Motor.ino`](P3_Distancia_Motor.ino) (en esta misma carpeta).
+**Archivo completo y listo para copiar:** [`Tarea3_Distancia_Motor.ino`](Tarea3_Distancia_Motor.ino) (en esta misma carpeta).
 
 Estructura del programa:
 
@@ -328,7 +328,7 @@ Obsérvese que el sonido se enciende y apaga **dentro del mismo `if` que conmuta
 
 1. Entrar a **wokwi.com** y crear cuenta (sirve la de Google).
 2. **New Project → Arduino Uno**.
-3. Pestaña del sketch: borrar todo y pegar `P3_Distancia_Motor.ino`.
+3. Pestaña del sketch: borrar todo y pegar `Tarea3_Distancia_Motor.ino`.
 4. Pestaña **`diagram.json`**: borrar todo y pegar el `diagram.json` de esta carpeta.
 5. **Start Simulation**.
 6. Hacer clic en el **HC-SR04**: aparece un control deslizante para fijar la distancia.
@@ -402,8 +402,8 @@ El enunciado pide tres formas:
 | Forma | Qué subir |
 |---|---|
 | **A** | Las 6 capturas + el video del recorrido |
-| **B** | Pegar el contenido de `P3_Distancia_Motor.ino` en el Editor de la plataforma |
-| **C** | Adjuntar el archivo `P3_Distancia_Motor.ino` |
+| **B** | Pegar el contenido de `Tarea3_Distancia_Motor.ino` en el Editor de la plataforma |
+| **C** | Adjuntar el archivo `Tarea3_Distancia_Motor.ino` |
 
 **Los tres puntos que conviene defender en voz alta:**
 

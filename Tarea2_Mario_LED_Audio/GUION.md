@@ -161,5 +161,5 @@ Según pide el enunciado, en tres formas:
 | Forma | Qué subir |
 |---|---|
 | **A** | Este video + capturas del código y del montaje |
-| **B** | Copiar y pegar el contenido de `P1_Mario_LED_Tono.ino` en el Editor de la plataforma |
-| **C** | Adjuntar el archivo `P1_Mario_LED_Tono.ino` |
+| **B** | Copiar y pegar el contenido de `Tarea2_Mario_LED_Audio.ino` en el Editor de la plataforma |
+| **C** | Adjuntar el archivo `Tarea2_Mario_LED_Audio.ino` |

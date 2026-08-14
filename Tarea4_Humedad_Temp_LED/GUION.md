@@ -167,8 +167,8 @@ Déjalo sonar completo, y luego suelta el sensor:
 | Forma | Qué subir |
 |---|---|
 | **A** | Este video + capturas del código y del montaje |
-| **B** | Copiar y pegar `P4_Temperatura_Display.ino` en el Editor de la plataforma |
-| **C** | Adjuntar el archivo `P4_Temperatura_Display.ino` |
+| **B** | Copiar y pegar `Tarea4_Humedad_Temp_LED.ino` en el Editor de la plataforma |
+| **C** | Adjuntar el archivo `Tarea4_Humedad_Temp_LED.ino` |
 
 ---
 

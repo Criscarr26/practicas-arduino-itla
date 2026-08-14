@@ -198,5 +198,5 @@ Señala el monitor serie:
 | Forma | Qué subir |
 |---|---|
 | **A** | Este video + capturas del código y del montaje |
-| **B** | Copiar y pegar `P3_Distancia_Motor.ino` en el Editor de la plataforma |
-| **C** | Adjuntar el archivo `P3_Distancia_Motor.ino` |
+| **B** | Copiar y pegar `Tarea3_Distancia_Motor.ino` en el Editor de la plataforma |
+| **C** | Adjuntar el archivo `Tarea3_Distancia_Motor.ino` |

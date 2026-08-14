@@ -114,8 +114,8 @@ Al terminar:
 | Forma | Qué subir |
 |---|---|
 | **A** | Este video + capturas del código y del montaje |
-| **B** | Copiar y pegar el contenido de `P2_SOS_LED_Tono.ino` en el Editor de la plataforma |
-| **C** | Adjuntar el archivo `P2_SOS_LED_Tono.ino` |
+| **B** | Copiar y pegar el contenido de `Tarea1_SOS_LED_Audio.ino` en el Editor de la plataforma |
+| **C** | Adjuntar el archivo `Tarea1_SOS_LED_Audio.ino` |
 
 > Ojo: ya tenías un `sos_led_audio` en la carpeta. Este lo sustituye: usa `tone()` con
 > duración (el anterior no la pasaba), deriva todos los tiempos del estándar Morse en vez de
