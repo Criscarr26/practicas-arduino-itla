@@ -1,6 +1,6 @@
 /*
   ============================================================================
-  PRACTICA 4 - Temperatura, humedad, luz y display
+  TAREA 4 - Temperatura, humedad, luz y display
                Opciones A + B + C + D del enunciado, las cuatro
   ============================================================================
   Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
@@ -254,7 +254,7 @@ void setup() {
 
   dht.begin();
 
-  Serial.println(F("== Practica 4: temperatura, humedad, luz y display =="));
+  Serial.println(F("== Tarea 4: temperatura, humedad, luz y display =="));
   Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
   Serial.println(F("Opciones A + B + C + D del enunciado"));
   Serial.println();

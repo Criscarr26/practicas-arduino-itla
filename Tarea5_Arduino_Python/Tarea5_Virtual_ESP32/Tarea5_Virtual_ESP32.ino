@@ -1,6 +1,6 @@
 /*
   ============================================================================
-  PRACTICA 5 - Lectura de los datos sensados de Arduino desde Python
+  TAREA 5 - Lectura de los datos sensados de Arduino desde Python
                VERSION VIRTUAL (parte 1 de 2: el firmware)
   ============================================================================
   Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
@@ -129,7 +129,7 @@ void setup() {
   digitalWrite(PIN_TRIG, LOW);
   dht.begin();
 
-  Serial.println(F("\n== Practica 5: Arduino -> MQTT -> Python =="));
+  Serial.println(F("\n== Tarea 5: Arduino -> MQTT -> Python =="));
   Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
 
   Serial.print(F("Conectando a WiFi"));

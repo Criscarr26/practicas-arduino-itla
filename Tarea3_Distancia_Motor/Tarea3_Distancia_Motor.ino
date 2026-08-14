@@ -1,6 +1,6 @@
 /*
   ============================================================================
-  PRACTICA 3 - Detector de distancia que gobierna un motor, un LED y un buzzer
+  TAREA 3 - Detector de distancia que gobierna un motor, un LED y un buzzer
   ============================================================================
   Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
   Profesor   : Luis Bessewell Feliz
@@ -273,7 +273,7 @@ void setup() {
 
   digitalWrite(PIN_TRIG, LOW);
 
-  Serial.println(F("== Practica 3: detector de distancia con motor =="));
+  Serial.println(F("== Tarea 3: detector de distancia con motor =="));
   Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
   Serial.println();
   Serial.println(F("Umbrales calculados sobre 400 cm de alcance maximo:"));

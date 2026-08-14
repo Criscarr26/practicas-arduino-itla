@@ -1,6 +1,6 @@
 /*
   ============================================================================
-  PRACTICA 2 - Señal de socorro S.O.S. en codigo Morse, con luz y sonido
+  TAREA 1 - Señal de socorro S.O.S. en codigo Morse, con luz y sonido
   ============================================================================
   Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
   Profesor   : Luis Bessewell Feliz
@@ -96,7 +96,7 @@ void setup() {
   pinMode(PIN_LED,      OUTPUT);
   pinMode(PIN_ZUMBADOR, OUTPUT);
 
-  Serial.println(F("== Practica 2: S.O.S. en codigo Morse =="));
+  Serial.println(F("== Tarea 1: S.O.S. en codigo Morse =="));
   Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
   Serial.print(F("Unidad basica: "));
   Serial.print(UNIDAD);

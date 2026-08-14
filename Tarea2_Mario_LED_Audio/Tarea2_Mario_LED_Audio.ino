@@ -1,6 +1,6 @@
 /*
   ============================================================================
-  PRACTICA 1 - Melodia introductoria de Super Mario Bros con luz y sonido
+  TAREA 2 - Melodia introductoria de Super Mario Bros con luz y sonido
   ============================================================================
   Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
   Profesor   : Luis Bessewell Feliz
@@ -195,7 +195,7 @@ void setup() {
   pinMode(PIN_LED,      OUTPUT);
   pinMode(PIN_ZUMBADOR, OUTPUT);
 
-  Serial.println(F("== Practica 1: Super Mario Bros con luz y sonido =="));
+  Serial.println(F("== Tarea 2: Super Mario Bros con luz y sonido =="));
   Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
   Serial.print(F("Notas en la melodia: "));
   Serial.println(TOTAL_NOTAS);
