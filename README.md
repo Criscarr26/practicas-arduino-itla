@@ -18,21 +18,32 @@
 
 ---
 
-## Las cinco prácticas
+## Las prácticas
 
-| # | Carpeta | Qué hace | Valor |
-|---|---|---|---|
-| 1 | [`P1_Mario_LED_Tono/`](P1_Mario_LED_Tono) | Melodía de Super Mario Bros con luz sincronizada | — |
-| 2 | [`P2_SOS_LED_Tono/`](P2_SOS_LED_Tono) | S.O.S. en código Morse con luz y sonido | — |
-| 3 | [`P3_Distancia_Motor/`](P3_Distancia_Motor) | HC-SR04 que gobierna servo, LED y buzzer por rangos | 8 pts |
-| 4 | [`P4_Temperatura_Display/`](P4_Temperatura_Display) | DHT11 + LED RGB + alarma + LCD1602 (opción D) | 8 pts |
-| 5 | [`P5_Arduino_Python/`](P5_Arduino_Python) | Arduino sensa, Python recibe, guarda y grafica | 8 pts |
+| # | Carpeta | Qué hace |
+|---|---|---|
+| Reto 1 | [`Reto1_Encender_Apagar_LED/`](Reto1_Encender_Apagar_LED) | Encender y apagar un LED |
+| Tarea 1 | [`Tarea1_SOS_LED_Audio/`](Tarea1_SOS_LED_Audio) | S.O.S. en código Morse con luz y sonido |
+| Tarea 2 | [`Tarea2_Mario_LED_Audio/`](Tarea2_Mario_LED_Audio) | Melodía de Super Mario Bros con luz sincronizada |
+| Tarea 3 | [`Tarea3_Distancia_Motor/`](Tarea3_Distancia_Motor) | HC-SR04 que gobierna un servo por rangos — **simulador** |
+| Tarea 3 | [`Tarea3_Distancia_Fisico/`](Tarea3_Distancia_Fisico) | HC-SR04 con aviso sonoro proporcional — **placa real** |
+| Tarea 4 | [`Tarea4_Humedad_Temp_LED/`](Tarea4_Humedad_Temp_LED) | DHT11 + LED RGB + alarma + LCD1602 |
+| Tarea 5 | [`Tarea5_Arduino_Python/`](Tarea5_Arduino_Python) | Arduino sensa, Python recibe, guarda y grafica |
 
-Cada carpeta trae:
+Cada carpeta trae el **`.ino`** con la investigación previa documentada en el encabezado, y
+las que están pensadas para el simulador traen además un **`diagram.json`** listo para pegar
+en [Wokwi](https://wokwi.com).
 
-- el **`.ino`** con la investigación previa documentada en el encabezado,
-- un **`diagram.json`** listo para pegar en [Wokwi](https://wokwi.com),
-- un **`GUION.md`** con el texto para grabar la explicación en video.
+### Por qué la Tarea 3 tiene dos versiones
+
+No conseguí el motor a tiempo y lo negocié con el profesor antes de la entrega. Lo que se
+evalúa es el objetivo —medir distancia y decidir cuándo algo debe continuar o detenerse—, no
+la pieza concreta.
+
+- **`Tarea3_Distancia_Motor`** es la versión completa con servomotor, y corre en el simulador.
+- **`Tarea3_Distancia_Fisico`** es la que corre en la placa real: el aviso es sonoro, y el
+  ritmo del pitido cambia de forma continua con la distancia, como un sensor de aparcamiento.
+  No usa la librería `Servo`.
 
 ---
 
@@ -57,10 +68,15 @@ Desde el IDE: **Programa → Incluir Librería → Administrar Bibliotecas**
 
 | Práctica | Librería |
 |---|---|
-| 1 y 2 | ninguna |
-| 3 | `Servo` (incluida en el IDE) |
-| 4 | `DHT sensor library` de Adafruit + `Adafruit Unified Sensor` |
-| 5 | `DHT sensor library` en Arduino, y en Python: `pip install pyserial matplotlib` |
+| Reto 1, Tareas 1 y 2 | ninguna |
+| Tarea 3 — versión simulador | `Servo` |
+| Tarea 3 — versión física | **ninguna** |
+| Tarea 4 | `DHT sensor library` de Adafruit + `Adafruit Unified Sensor` |
+| Tarea 5 | `DHT sensor library` en Arduino, y en Python: `pip install pyserial matplotlib` |
+
+La `Servo` no viene instalada de fábrica: hay que añadirla desde el Administrador de
+Bibliotecas. Si al compilar la versión física aparece un aviso pidiendo instalar algo de
+motores, es que está abierto el sketch del simulador y no el de la placa.
 
 ---
 
