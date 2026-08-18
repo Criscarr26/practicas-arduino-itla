@@ -84,6 +84,11 @@ SIN_ECO = -1.0                  # lo que manda la placa cuando no ve nada
 # el tiempo real que representa cada lectura.
 PERIODO_ENVIO_MS = 200
 
+# La placa manda su cabecera UNA sola vez, al arrancar. Si por lo que sea no
+# se llega a ver -porque el programa entro cuando ya estaba enviando, o porque
+# se perdio en el arranque- se usan estos nombres y se sigue adelante.
+COLUMNAS_POR_DEFECTO = ["LECTURA", "MILIS", "DISTANCIA_CM", "ZONA", "ESTADO"]
+
 
 # =============================================================================
 # 1. Encontrar la placa
@@ -294,11 +299,16 @@ def main():
         print("  - Ese no es el puerto; ejecuta sin argumentos para ver la lista.")
         sys.exit(1)
 
-    # Al abrir el puerto, DTR reinicia la placa. Hay que darle tiempo a
-    # arrancar y a mandar su cabecera, o llegaran lineas cortadas.
+    # Al abrir el puerto, DTR reinicia la placa. Se limpia lo que haya en el
+    # buffer AHORA -restos sueltos del arranque- y solo despues se espera.
+    #
+    # El orden importa y es facil equivocarse: limpiar DESPUES de la espera
+    # borra la cabecera, que para entonces ya llego. Y como la placa solo la
+    # manda una vez, el programa se quedaria esperando una linea que no va a
+    # volver, descartando todos los datos.
+    arduino.reset_input_buffer()
     print("Esperando a que la placa arranque (auto-reset por DTR)...")
     time.sleep(2.5)
-    arduino.reset_input_buffer()
 
     columnas = None
     filas = []
