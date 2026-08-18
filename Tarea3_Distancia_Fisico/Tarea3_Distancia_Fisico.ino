@@ -66,9 +66,41 @@
   monitor serie; lo que se acota es el rango del AVISO, no el del sensor.
   Es una decision de diseño, no una limitacion del hardware.
 
-  El LED del pin 13 parpadea AL MISMO RITMO que el zumbador. Asi el video
+  El LED del pin 13 parpadea AL MISMO RITMO que ese zumbador. Asi el video
   funciona aunque se vea sin sonido: se aprecia como el parpadeo se acelera
   segun se acerca la mano, y cuando se queda fijo es que hay que parar.
+
+  ============================================================================
+  DOS ZUMBADORES, DOS MENSAJES DISTINTOS
+  ============================================================================
+  Un solo zumbador tiene que contarlo todo con un unico ritmo, y eso se presta
+  a confusion: un pitido muy rapido y un tono continuo se parecen demasiado
+  cuando uno esta pendiente de otra cosa.
+
+  Con dos, cada uno dice una cosa sola:
+
+     ZUMBADOR DE RITMO (pin 9)   ->  A QUE DISTANCIA estas
+        Pulsa siempre que haya algo delante, y va mas rapido cuanto mas cerca.
+        Es informacion continua: te va guiando.
+
+     ZUMBADOR FIJO (pin 8)       ->  PARA
+        No pulsa nunca. O suena entero o esta callado. Se enciende justo
+        cuando la maquina pasa a DETENIDA, y se apaga cuando vuelve a marchar.
+        Es informacion binaria: una orden.
+
+  Asi el operador distingue "me estoy acercando" de "detente" sin mirar nada.
+  Es como funciona una marcha atras de verdad: el pitido te guia, y otra señal
+  distinta te avisa del limite.
+
+  UNA LIMITACION DEL HARDWARE QUE CONVIENE SABER
+  ----------------------------------------------
+  En el UNO, la funcion tone() solo puede sonar en UN pin a la vez: usa un
+  unico temporizador interno, y al llamarla sobre un segundo pin el primero se
+  calla. O sea que LOS DOS ZUMBADORES NO PUEDEN SER PASIVOS.
+
+  Con dos zumbadores ACTIVOS no hay problema ninguno: cada uno se enciende con
+  digitalWrite() y suenan a la vez sin estorbarse. Si uno es pasivo y el otro
+  activo, tambien funciona. Los dos pasivos, no.
 
   ============================================================================
   INVESTIGACION PREVIA: COMO MIDE DISTANCIA EL HC-SR04
@@ -101,10 +133,10 @@
   El ritmo del pitido es continuo, pero la DECISION sigue siendo discreta:
   la maquina esta en marcha o no lo esta. Las zonas son las que deciden eso.
 
-    Fuera de rango (sin eco)  ->  callado, DETENIDA
-    Lejos   (mas de 200 cm)   ->  pitido lento, EN MARCHA
-    Media   (104 a 200 cm)    ->  pitido medio, EN MARCHA
-    Cerca   (menos de 104 cm) ->  pitido rapido, DETENIDA
+    Fuera de rango (sin eco)  ->  los dos callados,            DETENIDA
+    Lejos   (mas de 200 cm)   ->  ritmo lento,  fijo callado,   EN MARCHA
+    Media   (104 a 200 cm)    ->  ritmo medio,  fijo callado,   EN MARCHA
+    Cerca   (menos de 104 cm) ->  ritmo rapido, FIJO SONANDO,   DETENIDA
 
   ============================================================================
   MONTAJE
@@ -115,13 +147,19 @@
        TRIG    ----->   pin 3
        ECHO    ----->   pin 2
 
-     Zumbador         Arduino
-       + (larga) --->   pin 9
-       - (corta) --->   GND
+     Zumbador de RITMO       Arduino
+       + (larga) ----------->   pin 9
+       - (corta) ----------->   GND
 
-  No hace falta ninguna resistencia: el sensor no las lleva, el zumbador se
-  conecta directo, y el LED del pin 13 ya viene montado en la placa con la
+     Zumbador FIJO           Arduino
+       + (larga) ----------->   pin 8
+       - (corta) ----------->   GND
+
+  No hace falta ninguna resistencia: el sensor no las lleva, los zumbadores se
+  conectan directos, y el LED del pin 13 ya viene montado en la placa con la
   suya puesta.
+
+  El de ritmo ya estaba puesto en el pin 9; solo se añade el segundo al 8.
 
   ============================================================================
   EN QUE SE DIFERENCIA DEL TUTORIAL
@@ -146,23 +184,32 @@
 // ---------------------------------------------------------------------------
 // Mapa de pines - los del montaje real
 // ---------------------------------------------------------------------------
-const int PIN_ECHO     = 2;
-const int PIN_TRIG     = 3;
-const int PIN_ZUMBADOR = 9;
-const int PIN_LED      = 13;    // LED que ya trae la placa, con su resistencia
+const int PIN_ECHO = 2;
+const int PIN_TRIG = 3;
+
+// Dos zumbadores, cada uno con un trabajo distinto:
+const int PIN_ZUMBADOR_RITMO = 9;   // pita mas rapido cuanto mas cerca
+const int PIN_ZUMBADOR_FIJO  = 8;   // tono continuo cuando hay que PARAR
+
+const int PIN_LED = 13;             // LED de la placa, con su resistencia
 
 // ---------------------------------------------------------------------------
-// QUE TIPO DE ZUMBADOR TIENES
+// QUE TIPO ES CADA ZUMBADOR
 //
 // Se sabe con el sketch Prueba_Zumbador, mirando en que fase suena:
 //
-//     sono en la FASE A (tone) ......  es PASIVO   -> pon esto en true
+//     sono en la FASE A (tone) ......  es PASIVO   -> ponlo en true
 //     sono en la FASE C (5V fijo) ...  es ACTIVO   -> dejalo en false
 //
-// El tutorial usa digitalWrite() en vez de tone(), asi que el suyo es activo.
-// Si el tuyo resulto ser del otro tipo, cambia esta linea y vuelve a cargar.
+// AVISO IMPORTANTE: en el UNO, tone() solo puede sonar en UN pin a la vez.
+// Usa un unico temporizador, y al llamarlo sobre un segundo pin el primero se
+// calla. Por eso LOS DOS ZUMBADORES NO PUEDEN SER PASIVOS: como mucho uno.
+//
+// Si los dos son activos, no hay ningun problema: cada uno se maneja con
+// digitalWrite() y suenan a la vez sin estorbarse.
 // ---------------------------------------------------------------------------
-const bool ZUMBADOR_PASIVO = false;
+const bool RITMO_ES_PASIVO = false;
+const bool FIJO_ES_PASIVO  = true;
 
 // ---------------------------------------------------------------------------
 // Umbrales, derivados del alcance del sensor
@@ -201,7 +248,10 @@ const unsigned long TIEMPO_LIMITE_ECO = 25000UL;
 const unsigned long PERIODO_MEDICION = 60;    // el HC-SR04 necesita >= 50 ms
 const unsigned long PERIODO_REPORTE  = 500;
 
-const int TONO_PITIDO = 1000;   // Hz; solo se usa si el zumbador es pasivo
+const int TONO_PITIDO = 1000;   // Hz del zumbador de ritmo
+const int TONO_PARADA = 1800;   // Hz del zumbador fijo, mas agudo para
+                                // distinguirlo si los dos son pasivos.
+                                // Solo se usan si el zumbador es pasivo.
 
 // ---------------------------------------------------------------------------
 // Las cuatro zonas, con nombre en vez de 0, 1, 2, 3
@@ -232,10 +282,11 @@ unsigned long tReporte  = 0;
 void setup() {
   Serial.begin(9600);
 
-  pinMode(PIN_TRIG,     OUTPUT);
-  pinMode(PIN_ECHO,     INPUT);
-  pinMode(PIN_LED,      OUTPUT);
-  pinMode(PIN_ZUMBADOR, OUTPUT);
+  pinMode(PIN_TRIG,           OUTPUT);
+  pinMode(PIN_ECHO,           INPUT);
+  pinMode(PIN_LED,            OUTPUT);
+  pinMode(PIN_ZUMBADOR_RITMO, OUTPUT);
+  pinMode(PIN_ZUMBADOR_FIJO,  OUTPUT);
 
   digitalWrite(PIN_TRIG, LOW);
 
@@ -247,7 +298,8 @@ void setup() {
   // primero que se ve es que espera el programa.
   Serial.print(F("Pines -> TRIG: "));   Serial.print(PIN_TRIG);
   Serial.print(F("   ECHO: "));         Serial.print(PIN_ECHO);
-  Serial.print(F("   ZUMBADOR: "));     Serial.println(PIN_ZUMBADOR);
+  Serial.print(F("   RITMO: "));        Serial.print(PIN_ZUMBADOR_RITMO);
+  Serial.print(F("   FIJO: "));         Serial.println(PIN_ZUMBADOR_FIJO);
 
   Serial.println(F("El pitido va mas rapido cuanto mas cerca este el obstaculo."));
   Serial.print(F("Menos de ")); Serial.print(DISTANCIA_CONTINUO, 0);
@@ -355,10 +407,21 @@ Zona clasificarZona(float d) {
 // ===========================================================================
 void tareaLuzYSonido(unsigned long ahora) {
 
+  // --- Zumbador FIJO: la orden de parar -----------------------------------
+  // No pulsa nunca. O suena entero o esta callado, y eso lo hace inconfundible
+  // frente al otro. Suena exactamente cuando la maquina esta detenida.
+  if (enMarcha || zonaActual == FUERA_DE_RANGO) {
+    callarFijo();
+  } else {
+    sonarFijo();
+  }
+
+  // --- Zumbador de RITMO: a que distancia estamos -------------------------
+
   // Nada delante: silencio total.
   if (zonaActual == FUERA_DE_RANGO) {
     digitalWrite(PIN_LED, LOW);
-    callar();
+    callarRitmo();
     sonando = false;
     return;
   }
@@ -366,7 +429,7 @@ void tareaLuzYSonido(unsigned long ahora) {
   // Tan cerca que el aviso ya no se interrumpe.
   if (intervaloActual == 0) {
     digitalWrite(PIN_LED, HIGH);
-    sonar(TONO_PITIDO);
+    sonarRitmo();
     sonando = true;
     return;
   }
@@ -376,29 +439,36 @@ void tareaLuzYSonido(unsigned long ahora) {
     tPitido = ahora;
     sonando = !sonando;
     digitalWrite(PIN_LED, sonando);
-    if (sonando) sonar(TONO_PITIDO); else callar();
+    if (sonando) sonarRitmo(); else callarRitmo();
   }
 }
 
 // ---------------------------------------------------------------------------
-// Una sola puerta para el sonido, valida para los dos tipos de zumbador.
-// Asi el resto del programa no tiene que saber cual esta conectado.
+// Una sola puerta para el sonido. Recibe QUE zumbador y de que tipo es, asi
+// el resto del programa no tiene que saber nada de tone() ni de digitalWrite.
 // ---------------------------------------------------------------------------
-void sonar(int frecuencia) {
-  if (ZUMBADOR_PASIVO) {
-    tone(PIN_ZUMBADOR, frecuencia);
+void sonarEn(int pin, bool esPasivo, int frecuencia) {
+  if (esPasivo) {
+    tone(pin, frecuencia);
   } else {
-    digitalWrite(PIN_ZUMBADOR, HIGH);   // el activo se enciende y ya
+    digitalWrite(pin, HIGH);            // el activo se enciende y ya
   }
 }
 
-void callar() {
-  if (ZUMBADOR_PASIVO) {
-    noTone(PIN_ZUMBADOR);
+void callarEn(int pin, bool esPasivo) {
+  if (esPasivo) {
+    noTone(pin);
   } else {
-    digitalWrite(PIN_ZUMBADOR, LOW);
+    digitalWrite(pin, LOW);
   }
 }
+
+// Atajos para no repetir los parametros en cada llamada.
+void sonarRitmo() { sonarEn(PIN_ZUMBADOR_RITMO, RITMO_ES_PASIVO, TONO_PITIDO); }
+void callarRitmo() { callarEn(PIN_ZUMBADOR_RITMO, RITMO_ES_PASIVO); }
+
+void sonarFijo()  { sonarEn(PIN_ZUMBADOR_FIJO, FIJO_ES_PASIVO, TONO_PARADA); }
+void callarFijo() { callarEn(PIN_ZUMBADOR_FIJO, FIJO_ES_PASIVO); }
 
 // ===========================================================================
 // TAREA 3 - Informe por el monitor serie (9600 baudios)

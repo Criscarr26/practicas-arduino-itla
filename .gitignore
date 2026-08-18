@@ -1,0 +1,5 @@
+
+# Los videos van en la carpeta compartida, no en el repositorio
+*.mp4
+*.mov
+*.mkv

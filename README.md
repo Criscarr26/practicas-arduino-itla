@@ -27,12 +27,23 @@
 | Tarea 2 | [`Tarea2_Mario_LED_Audio/`](Tarea2_Mario_LED_Audio) | Melodía de Super Mario Bros con luz sincronizada |
 | Tarea 3 | [`Tarea3_Distancia_Motor/`](Tarea3_Distancia_Motor) | HC-SR04 que gobierna un servo por rangos — **simulador** |
 | Tarea 3 | [`Tarea3_Distancia_Fisico/`](Tarea3_Distancia_Fisico) | HC-SR04 con aviso sonoro proporcional — **placa real** |
-| Tarea 4 | [`Tarea4_Humedad_Temp_LED/`](Tarea4_Humedad_Temp_LED) | DHT11 + LED RGB + alarma + LCD1602 |
+| Tarea 4 | [`Tarea4_Ausencia_Luz/`](Tarea4_Ausencia_Luz) | LDR que emite S.O.S. al faltar la luz — **opción C, placa real** |
+| Tarea 4 | [`Tarea4_Humedad_Temp_LED/`](Tarea4_Humedad_Temp_LED) | DHT11 + LED RGB + alarma + LCD1602 — las cuatro opciones, simulador |
 | Tarea 5 | [`Tarea5_Arduino_Python/`](Tarea5_Arduino_Python) | Arduino sensa, Python recibe, guarda y grafica |
 
 Cada carpeta trae el **`.ino`** con la investigación previa documentada en el encabezado, y
 las que están pensadas para el simulador traen además un **`diagram.json`** listo para pegar
 en [Wokwi](https://wokwi.com).
+
+### Por qué la Tarea 4 tiene dos versiones
+
+El enunciado plantea cuatro opciones —A temperatura, B humedad, C ausencia de luz, y D
+cualquiera de esas más un display— y pide **elegir una**.
+
+- **`Tarea4_Ausencia_Luz`** es la opción C, la que corre en la placa: fotorresistencia con
+  divisor de tensión, y un S.O.S. en Morse mientras no haya luz. No usa ninguna librería.
+- **`Tarea4_Humedad_Temp_LED`** hace las cuatro a la vez y está pensada para el simulador.
+  Necesita el DHT, el LCD y su potenciómetro.
 
 ### Por qué la Tarea 3 tiene dos versiones
 
@@ -41,9 +52,14 @@ evalúa es el objetivo —medir distancia y decidir cuándo algo debe continuar 
 la pieza concreta.
 
 - **`Tarea3_Distancia_Motor`** es la versión completa con servomotor, y corre en el simulador.
-- **`Tarea3_Distancia_Fisico`** es la que corre en la placa real: el aviso es sonoro, y el
-  ritmo del pitido cambia de forma continua con la distancia, como un sensor de aparcamiento.
-  No usa la librería `Servo`.
+- **`Tarea3_Distancia_Fisico`** es la que corre en la placa real. Lleva **dos zumbadores**,
+  cada uno con un mensaje distinto: el del pin 9 pulsa más rápido cuanto más cerca está el
+  obstáculo, y el del pin 8 suena continuo solo cuando la máquina debe detenerse. No usa la
+  librería `Servo`.
+
+  Un detalle del hardware: en el UNO, `tone()` solo puede sonar en un pin a la vez, porque usa
+  un único temporizador. Por eso los dos zumbadores no pueden ser pasivos — aquí uno es activo
+  y el otro pasivo.
 
 ---
 
@@ -71,7 +87,8 @@ Desde el IDE: **Programa → Incluir Librería → Administrar Bibliotecas**
 | Reto 1, Tareas 1 y 2 | ninguna |
 | Tarea 3 — versión simulador | `Servo` |
 | Tarea 3 — versión física | **ninguna** |
-| Tarea 4 | `DHT sensor library` de Adafruit + `Adafruit Unified Sensor` |
+| Tarea 4 — opción C, física | **ninguna** |
+| Tarea 4 — simulador | `DHT sensor library` de Adafruit + `Adafruit Unified Sensor` |
 | Tarea 5 | `DHT sensor library` en Arduino, y en Python: `pip install pyserial matplotlib` |
 
 La `Servo` no viene instalada de fábrica: hay que añadirla desde el Administrador de
