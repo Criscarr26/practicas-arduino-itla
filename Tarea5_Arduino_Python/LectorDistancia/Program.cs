@@ -296,7 +296,6 @@ static class Program
     /// Visual Studio no ejecuta desde la carpeta del proyecto sino desde la de
     /// compilacion, asi que el CSV acabaria enterrado ahi dentro. Se sube por el
     /// arbol hasta dar con la carpeta que contiene el .csproj.
-    /// ahi dentro. Se sube por el arbol hasta dar con la carpeta que tiene el .csproj.
     /// </summary>
     static string CarpetaDelProyecto()
     {
