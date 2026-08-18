@@ -8,3 +8,7 @@ __pycache__/
 *.pyc
 *.csv
 grafica_*.png
+
+# Compilacion de .NET (el proyecto de C# de la Tarea 5)
+bin/
+obj/

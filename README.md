@@ -29,7 +29,7 @@
 | Tarea 3 | [`Tarea3_Distancia_Fisico/`](Tarea3_Distancia_Fisico) | HC-SR04 con aviso sonoro proporcional — **placa real** |
 | Tarea 4 | [`Tarea4_Ausencia_Luz/`](Tarea4_Ausencia_Luz) | LDR que emite S.O.S. al faltar la luz — **opción C, placa real** |
 | Tarea 4 | [`Tarea4_Humedad_Temp_LED/`](Tarea4_Humedad_Temp_LED) | DHT11 + LED RGB + alarma + LCD1602 — las cuatro opciones, simulador |
-| Tarea 5 | [`Tarea5_Arduino_Python/`](Tarea5_Arduino_Python) | El sensor de la Tarea 3 leído **desde Python** por el puerto serie |
+| Tarea 5 | [`Tarea5_Arduino_Python/`](Tarea5_Arduino_Python) | El sensor de la Tarea 3 leído **desde Python y desde C#** por el puerto serie |
 
 Cada carpeta trae el **`.ino`** con la investigación previa documentada en el encabezado, y
 las que están pensadas para el simulador traen además un **`diagram.json`** listo para pegar
@@ -51,6 +51,28 @@ cuántas veces tuvo que parar y cuál fue la parada más larga.
 
 Es además el tercer escalón del tema de la asignatura: dos programas en dos máquinas distintas
 que no comparten memoria y se coordinan solo por mensajes. Eso es **programación distribuida**.
+
+Está resuelta **dos veces, en dos lenguajes distintos**, y esa es justamente la gracia: la placa
+no sabe ni le importa quién la escucha. Publica el mismo CSV por el puerto y del otro lado da
+igual que haya un intérprete de Python o un ejecutable de .NET. Cambiar el lenguaje del que
+consume no obligó a tocar ni una línea del `.ino`.
+
+| Versión | Cómo se ejecuta |
+|---|---|
+| `lector_distancia.py` | `python lector_distancia.py` — necesita `pip install pyserial` |
+| `LectorDistancia/` | Abrir `LectorDistancia.sln` en **Visual Studio 2022** y pulsar *Iniciar*, o `dotnet run` |
+
+Las dos aceptan un número de segundos para que la captura se detenga sola —`dotnet run 30`— y
+si no se les pasa nada, corren hasta que se pulse **Ctrl+C**. Ambas guardan el CSV y sacan el
+mismo informe.
+
+Dos detalles del puerto serie que costaron un rato y conviene no olvidar:
+
+- **`SerialPort` de .NET no levanta DTR por su cuenta**, y pyserial sí. Sin `DtrEnable = true`
+  la placa no se reinicia al conectarse, así que la numeración de lecturas continúa donde la
+  dejó la sesión anterior en vez de empezar en 1.
+- **El puerto admite un solo programa a la vez.** Si el Monitor Serie del IDE está abierto, o
+  quedó corriendo el lector de Python, el otro falla con *acceso denegado*.
 
 ### Por qué la Tarea 4 tiene dos versiones
 
@@ -106,7 +128,9 @@ Desde el IDE: **Programa → Incluir Librería → Administrar Bibliotecas**
 | Tarea 3 — versión física | **ninguna** |
 | Tarea 4 — opción C, física | **ninguna** |
 | Tarea 4 — simulador | `DHT sensor library` de Adafruit + `Adafruit Unified Sensor` |
-| Tarea 5 | `DHT sensor library` en Arduino, y en Python: `pip install pyserial matplotlib` |
+| Tarea 5 — placa | **ninguna** |
+| Tarea 5 — Python | `pip install pyserial` |
+| Tarea 5 — C# | paquete NuGet `System.IO.Ports` (ya declarado en el `.csproj`) |
 
 La `Servo` no viene instalada de fábrica: hay que añadirla desde el Administrador de
 Bibliotecas. Si al compilar la versión física aparece un aviso pidiendo instalar algo de
