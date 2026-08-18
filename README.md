@@ -29,11 +29,28 @@
 | Tarea 3 | [`Tarea3_Distancia_Fisico/`](Tarea3_Distancia_Fisico) | HC-SR04 con aviso sonoro proporcional — **placa real** |
 | Tarea 4 | [`Tarea4_Ausencia_Luz/`](Tarea4_Ausencia_Luz) | LDR que emite S.O.S. al faltar la luz — **opción C, placa real** |
 | Tarea 4 | [`Tarea4_Humedad_Temp_LED/`](Tarea4_Humedad_Temp_LED) | DHT11 + LED RGB + alarma + LCD1602 — las cuatro opciones, simulador |
-| Tarea 5 | [`Tarea5_Arduino_Python/`](Tarea5_Arduino_Python) | Arduino sensa, Python recibe, guarda y grafica |
+| Tarea 5 | [`Tarea5_Arduino_Python/`](Tarea5_Arduino_Python) | El sensor de la Tarea 3 leído **desde Python** por el puerto serie |
 
 Cada carpeta trae el **`.ino`** con la investigación previa documentada en el encabezado, y
 las que están pensadas para el simulador traen además un **`diagram.json`** listo para pegar
 en [Wokwi](https://wokwi.com).
+
+### Qué hace la Tarea 5
+
+El profesor lo planteó así: *«yo lo que quiero es que tú salgas de Arduino… que desde otro
+lenguaje leas por el puerto lo que él sensa»*, y dejó abierto el tema — *«tomen una de esas
+prácticas y conviértanla»*.
+
+Así que **no se monta nada nuevo**: se reutiliza tal cual el montaje de la Tarea 3, y lo que se
+añade es que la placa, además de avisar por sonido, publique cada lectura en CSV por el puerto.
+Del otro lado, Python la recibe, la tabula en vivo, la guarda y saca un informe.
+
+El informe mide lo mismo que el profesor puso de ejemplo con la máquina de coser —*cuánto se
+detiene, qué tan rápido trabaja*—: tiempo en cada zona, tiempo en marcha frente a detenida,
+cuántas veces tuvo que parar y cuál fue la parada más larga.
+
+Es además el tercer escalón del tema de la asignatura: dos programas en dos máquinas distintas
+que no comparten memoria y se coordinan solo por mensajes. Eso es **programación distribuida**.
 
 ### Por qué la Tarea 4 tiene dos versiones
 

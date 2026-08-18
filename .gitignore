@@ -3,3 +3,8 @@
 *.mp4
 *.mov
 *.mkv
+
+__pycache__/
+*.pyc
+*.csv
+grafica_*.png
