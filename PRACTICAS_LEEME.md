@@ -141,7 +141,13 @@ Comprobados uno por uno el 7 de agosto de 2026: existen, son públicos y tratan 
 
 ---
 
+## La portada que ve el profesor
+
+[`LEEME_CARPETA_COMPARTIDA.md`](LEEME_CARPETA_COMPARTIDA.md) es la copia de la portada que va en
+la raíz de la carpeta compartida: le dice qué hay en cada subcarpeta, qué video es cada
+evidencia, y lleva la declaración de uso de IA.
+
 ## Qué falta
 
-Está en [`MATRIZ_CUMPLIMIENTO.md`](MATRIZ_CUMPLIMIENTO.md), §6 — con el estado real de cada
+Está en [`MATRIZ_CUMPLIMIENTO.md`](MATRIZ_CUMPLIMIENTO.md), §5 — con el estado real de cada
 práctica y de cada video.
