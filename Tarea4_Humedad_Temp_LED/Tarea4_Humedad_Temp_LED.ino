@@ -83,9 +83,16 @@
      RS -> indica si lo enviado es COMANDO (0) o CARACTER (1)
      E  -> pulso de habilitacion; el dato se lee en su flanco
 
-  EL POTENCIOMETRO ES OBLIGATORIO: el pin V0 controla el contraste. Sin el,
-  la pantalla se ve toda blanca o toda negra y parece que el codigo falla.
-  Es el error numero uno con este display.
+  EL CONTRASTE ES EL PROBLEMA: el pin V0 pide un voltaje intermedio. Sin nada
+  conectado ahi la pantalla se ve toda blanca y parece que el codigo falla; es
+  el error numero uno con este display.
+
+  Lo normal es resolverlo con un potenciometro, que ademas deja ajustarlo. Sin
+  potenciometro sirve una resistencia fija entre V0 y GND: 1k para empezar,
+  2.2k si se ve palido, 470 si se ve muy oscuro. Queda fijo, pero se lee.
+
+  Y si no hay ninguna de las dos, se pone USAR_LCD en false y se entregan las
+  opciones A, B y C, que es mas de lo que pide el enunciado.
 
   ============================================================================
   INVESTIGACION PREVIA 5: ¿SOPORTA ARDUINO HILOS Y TAREAS?
@@ -169,10 +176,45 @@
 // Hardware
 // ---------------------------------------------------------------------------
 #define PIN_DHT   2
-#define TIPO_DHT  DHT22        // en Wokwi la pieza es DHT22; con el kit fisico
-                               // del Elegoo cambiar a DHT11
+#define TIPO_DHT  DHT11        // el del kit Elegoo es el DHT11, la pieza azul.
+                               // En Wokwi la pieza es DHT22: alli hay que
+                               // cambiar esta linea, y solo esta.
 
 const int PIN_ZUMBADOR = 8;
+
+// ---------------------------------------------------------------------------
+// QUE TIPO DE ZUMBADOR HAY CONECTADO
+//
+// Pasivo : no suena solo, hay que darle la frecuencia con tone().
+// Activo : trae su propio oscilador; basta con darle corriente.
+//
+// El del montaje es ACTIVO, comprobado con el sketch Prueba_Zumbador: sono en
+// la fase de 5V fijo y no en la de tone(). Por eso esto va en false.
+//
+// Con un zumbador activo no se pueden hacer tonos distintos, pero las dos
+// alarmas se siguen distinguiendo igual de bien, porque lo que las diferencia
+// es el RITMO: el zumbido es continuo y el S.O.S. es el patron de Morse.
+// ---------------------------------------------------------------------------
+const bool ZUMBADOR_PASIVO = false;
+
+// ---------------------------------------------------------------------------
+// ¿HAY PANTALLA CONECTADA?  (opcion D del enunciado)
+//
+// El LCD necesita un potenciometro para el contraste: el pin V0 pide un
+// voltaje intermedio y sin el la pantalla se ve toda blanca. Sin potenciometro
+// hay dos salidas:
+//
+//   a) Dejar esto en false. Las opciones A, B y C siguen funcionando enteras,
+//      y el enunciado pide UNA de las cuatro, asi que ya se cumple de sobra.
+//
+//   b) Sustituir el potenciometro por una resistencia fija entre V0 y GND
+//      (empezar por 1k; si se ve muy palido probar 2.2k, si muy oscuro 470).
+//      No se puede ajustar despues, pero se lee. Entonces poner esto en true.
+//
+// Con esto en false el programa ni siquiera toca los seis pines del LCD, asi
+// que quedan libres por si hacen falta para otra cosa.
+// ---------------------------------------------------------------------------
+const bool USAR_LCD = false;
 const int PIN_ROJO     = 5;    // PWM
 const int PIN_VERDE    = 6;    // PWM
 const int PIN_AZUL     = 9;    // PWM
@@ -252,10 +294,12 @@ void setup() {
   for (int i = 0; i < 3; i++) pinMode(canales[i], OUTPUT);
   pinMode(PIN_ZUMBADOR, OUTPUT);
 
-  lcd.begin(16, 2);
-  lcd.print(F("SmartSalud ITLA"));
-  lcd.setCursor(0, 1);
-  lcd.print(F("2024-1932"));
+  if (USAR_LCD) {
+    lcd.begin(16, 2);
+    lcd.print(F("SmartSalud ITLA"));
+    lcd.setCursor(0, 1);
+    lcd.print(F("2024-1932"));
+  }
 
   dht.begin();
 
@@ -270,7 +314,7 @@ void setup() {
   ponerColor(0, 0, 255); delay(300);
   ponerColor(0, 0, 0);
 
-  lcd.clear();
+  if (USAR_LCD) lcd.clear();
 }
 
 // ---------------------------------------------------------------------------
@@ -363,7 +407,7 @@ void tareaDecidirAlarma() {
   if (alarmaActual != alarmaAnterior) {
     pasoMorse = 0;
     morseArrancado = false;
-    noTone(PIN_ZUMBADOR);
+    callar();
     alarmaAnterior = alarmaActual;
   }
 }
@@ -391,14 +435,14 @@ void tareaLuzYSonido(unsigned long ahora) {
   // --- Sonido -----------------------------------------------------------
   switch (alarmaActual) {
     case SIN_ALARMA:
-      noTone(PIN_ZUMBADOR);
+      callar();
       break;
 
     case ZUMBIDO:
       // Tono CONTINUO mientras dure el estado, como pide el enunciado.
       // Llamar a tone() repetidamente con la misma frecuencia no reinicia
       // nada, asi que es seguro hacerlo en cada vuelta.
-      tone(PIN_ZUMBADOR, 800);
+      sonar(800);
       break;
 
     case SOS:
@@ -432,8 +476,29 @@ void alarmaSOS(unsigned long ahora) {
 }
 
 void aplicarPasoMorse() {
-  if (pasoMorse % 2 == 0) tone(PIN_ZUMBADOR, 1000);
-  else                    noTone(PIN_ZUMBADOR);
+  if (pasoMorse % 2 == 0) sonar(1000);
+  else                    callar();
+}
+
+// ---------------------------------------------------------------------------
+// Una sola puerta para el sonido, valida para los dos tipos de zumbador. Asi
+// el resto del programa dice "suena" o "callate" sin tener que saber cual
+// esta conectado; si se cambia la pieza, se toca una linea y nada mas.
+// ---------------------------------------------------------------------------
+void sonar(int frecuencia) {
+  if (ZUMBADOR_PASIVO) {
+    tone(PIN_ZUMBADOR, frecuencia);
+  } else {
+    digitalWrite(PIN_ZUMBADOR, HIGH);   // el activo se enciende y ya
+  }
+}
+
+void callar() {
+  if (ZUMBADOR_PASIVO) {
+    noTone(PIN_ZUMBADOR);
+  } else {
+    digitalWrite(PIN_ZUMBADOR, LOW);
+  }
 }
 
 // ===========================================================================
@@ -442,6 +507,7 @@ void aplicarPasoMorse() {
 // Alterna dos pantallas para caber en 16x2 sin recortar informacion.
 // ===========================================================================
 void tareaPantalla(unsigned long ahora) {
+  if (!USAR_LCD) return;                 // sin pantalla no hay nada que hacer
   if (ahora - tPantalla < PERIODO_PANTALLA) return;
   tPantalla = ahora;
 
