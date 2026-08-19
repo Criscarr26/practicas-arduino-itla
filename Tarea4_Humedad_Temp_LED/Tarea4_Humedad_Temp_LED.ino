@@ -7,6 +7,11 @@
   Profesor   : Luis Bessewell Feliz
   Estudiante : Cristian Carrera - Matricula 2024-1932
   Institucion: Instituto Tecnologico de Las Americas (ITLA)
+
+  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
+  para depurar, documentar y estructurar este codigo. El montaje fisico, la
+  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
+  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
   Entorno    : simulador Wokwi (Arduino Cloud NO tiene simulador; ver el .md)
   Valor      : 8 puntos
 
@@ -98,7 +103,7 @@
   simbolos duran 150 o 450 ms. Todo a la vez. Con delay() la pantalla se
   congelaria mientras suena la alarma.
 
-  Por eso NO HAY UN SOLO delay() en este programa, y hasta el S.O.S. esta
+  Por eso NO HAY UN SOLO delay() DENTRO DEL loop(), y hasta el S.O.S. esta
   escrito como maquina de estados que avanza paso a paso.
 
   ============================================================================
@@ -195,7 +200,7 @@ const float H_CRITICA_ALTA = 70.0;
 const int UMBRAL_OSCURIDAD = 300;
 
 // ---------------------------------------------------------------------------
-// Ritmos de las tareas concurrentes (ms). Ningun delay() en todo el programa.
+// Ritmos de las tareas concurrentes (ms). Ningun delay() dentro del loop().
 // ---------------------------------------------------------------------------
 const unsigned long PERIODO_DHT      = 2000;   // el DHT no admite mas rapido
 const unsigned long PERIODO_LUZ      = 200;
@@ -270,6 +275,8 @@ void setup() {
 
 // ---------------------------------------------------------------------------
 // loop() = planificador cooperativo. Sin un solo delay().
+// (Los tres delay(300) del setup son la prueba inicial de color, antes de que
+//  exista nada que bloquear: en ese momento el programa aun no mide nada.)
 // ---------------------------------------------------------------------------
 void loop() {
   unsigned long ahora = millis();

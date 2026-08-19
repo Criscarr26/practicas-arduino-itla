@@ -7,7 +7,12 @@
   Estudiante : Cristian Carrera - Matricula 2024-1932
   Institucion: Instituto Tecnologico de Las Americas (ITLA)
   Placa      : Elegoo UNO R3 (compatible Arduino UNO)
-  Duracion   : aproximadamente 30 segundos
+
+  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
+  para depurar, documentar y estructurar este codigo. El montaje fisico, la
+  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
+  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+  Duracion   : unos 9 segundos por pasada (cronometrado, no estimado)
 
   ============================================================================
   INVESTIGACION PREVIA (lo que pide el enunciado)
@@ -118,7 +123,8 @@ const int PIN_LED      = 13;
 
 // ---------------------------------------------------------------------------
 // La melodia. Es el tema principal de Super Mario Bros (Koji Kondo, 1985),
-// transcrito nota por nota. Suena unos 30 segundos con el tempo de abajo.
+// transcrito nota por nota. Con el tempo de abajo, una pasada dura unos
+// 8,6 segundos; con la pausa de repeticion, unos 10,6.
 // ---------------------------------------------------------------------------
 const int notas[] = {
   // ---- Frase inicial: el "ta-ta-tan" que todo el mundo reconoce ----

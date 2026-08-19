@@ -7,6 +7,11 @@ Profesor   : Luis Bessewell Feliz
 Estudiante : Cristian Carrera - Matricula 2024-1932
 Institucion: Instituto Tecnologico de Las Americas (ITLA)
 
+Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
+para depurar, documentar y estructurar este codigo. El montaje fisico, la
+calibracion, las pruebas sobre la placa y la explicacion del video son propios.
+El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+
 Se conecta al Arduino por el puerto serie, recibe las lecturas del sensor de
 distancia, las muestra en vivo, las guarda en un CSV y, al terminar, saca un
 informe con estadisticas y una grafica.
@@ -330,7 +335,17 @@ def main():
                 if cruda.startswith("LECTURA"):
                     columnas = [c.strip() for c in cruda.split(",")]
                     print(f"(cabecera recibida: {', '.join(columnas)})\n")
-                continue
+                    continue
+
+                # No es la cabecera. Si aun asi parece un dato completo, se
+                # sigue con los nombres conocidos en vez de esperar para
+                # siempre: la placa manda la cabecera UNA sola vez y, si no se
+                # llego a ver, no la va a repetir.
+                if parsear(cruda, COLUMNAS_POR_DEFECTO) is not None:
+                    columnas = COLUMNAS_POR_DEFECTO
+                    print("(no se vio la cabecera; se usan los nombres conocidos)\n")
+                else:
+                    continue
 
             fila = parsear(cruda, columnas)
             if fila is None:
