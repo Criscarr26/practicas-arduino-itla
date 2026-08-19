@@ -8,6 +8,11 @@
   Institucion: Instituto Tecnologico de Las Americas (ITLA)
   Placa      : Elegoo UNO R3 (compatible Arduino UNO)
 
+  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
+  para depurar, documentar y estructurar este codigo. El montaje fisico, la
+  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
+  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+
   ============================================================================
   LOS PINES SON LOS DEL MONTAJE, NO AL REVES
   ============================================================================
@@ -126,6 +131,65 @@
   camino DOS veces, ida y vuelta. Sin ese /2 todas las medidas salen al doble.
 
   Alcance util del sensor: de 2 a 400 cm.
+
+  ============================================================================
+  INVESTIGACION PREVIA: ESTRUCTURAS DE CONTROL
+  ============================================================================
+    if / else if -> decide por RANGOS. Aqui clasifica la distancia medida y
+                    aplica la histeresis, que necesita comparar contra dos
+                    umbrales distintos segun el estado en que ya se este.
+    switch       -> elige entre VALORES discretos, no rangos. Aqui actua sobre
+                    la zona ya calculada. El reparto es deliberado: primero se
+                    decide con if, porque hay rangos, y despues se actua con
+                    switch, porque para entonces ya hay un valor concreto.
+    for          -> repite un numero CONOCIDO de veces. Aqui toma las tres
+                    lecturas del sensor con las que se calcula la mediana.
+    while        -> repite MIENTRAS se cumpla algo, un numero de veces que no
+                    se sabe de antemano. En este sketch no se usa ninguno, y es
+                    a proposito: un while dentro del loop bloquearia la placa,
+                    que es justo lo que este programa evita. El while que si
+                    existe es el que Arduino tiene por dentro, que llama a
+                    loop() indefinidamente.
+
+  ============================================================================
+  ANALISIS DEL SOLAPE DE RANGOS DEL ENUNCIADO
+  ============================================================================
+  El enunciado da los cuatro criterios en porcentajes del alcance del sensor.
+  Con los 400 cm de la hoja de datos, en centimetros son:
+
+    Criterio 1   95% a 5%    ->  380 a 20 cm   motor en marcha, LED fijo
+    Criterio 2   fuera de rango                todo apagado
+    Criterio 3   50% a 25%   ->  200 a 100 cm  LED parpadea + zumbador
+    Criterio 4   26% a 4%    ->  104 a 16 cm   parpadeo rapido + sonido propio
+
+  Escritos asi, los rangos SE PISAN, y no poco:
+
+    - El criterio 1 (380-20) CONTIENE enteros al 3 y al 4. Casi todo el
+      recorrido util cae a la vez en dos criterios.
+    - El 3 y el 4 se solapan entre ellos en la franja de 104 a 100 cm.
+    - Entre 20 y 16 cm ya no aplica el 1, pero si el 4.
+    - Por debajo de 16 cm el enunciado no dice nada.
+
+  REGLA DE RESOLUCION APLICADA: manda el criterio MAS CERCANO. Cuando una
+  distancia cae en varios, gana el de la franja mas proxima al obstaculo,
+  porque es el mas urgente. Es la logica de una alarma real: algo a 100 cm
+  cumple el criterio 3 y el 4 a la vez, y lo que hay que hacer es lo que pide
+  el 4, que es el que avisa de mas peligro.
+
+  COMO SE TRADUCE EN ESTA VERSION FISICA. El profesor autorizo sustituir el
+  motor, asi que el "motor en marcha" pasa a ser el estado EN MARCHA/DETENIDA
+  que se publica y se oye, y el "LED fijo" pasa a ser el zumbador de tono fijo:
+
+    Criterio 1  ->  zonas LEJOS y MEDIA: EN MARCHA, el zumbador fijo callado
+    Criterio 2  ->  FUERA_DE_RANGO (sin eco): los dos callados, DETENIDA
+    Criterio 3  ->  zona MEDIA (104 a 200 cm): ritmo medio, sincronizado
+    Criterio 4  ->  zona CERCA (menos de 104 cm): ritmo rapido y el zumbador
+                    fijo sonando, que es el "sonido particular" que se pide
+
+  La version con servo de Tarea3_Distancia_Motor implementa los cuatro
+  criterios en su forma literal, con motor y LED. Esta los cumple con los
+  medios que hay en el montaje real.
+
 
   ============================================================================
   LAS CUATRO ZONAS

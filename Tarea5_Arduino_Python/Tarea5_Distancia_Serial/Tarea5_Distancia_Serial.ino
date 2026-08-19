@@ -8,6 +8,11 @@
   Institucion: Instituto Tecnologico de Las Americas (ITLA)
   Placa      : Elegoo UNO R3 (compatible Arduino UNO)
 
+  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
+  para depurar, documentar y estructurar este codigo. El montaje fisico, la
+  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
+  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+
   La parte 2 es el programa lector, escrito en Python, que esta en la carpeta
   de al lado: lector_distancia.py
 
@@ -96,6 +101,47 @@
        que llega, o recibira lineas cortadas por la mitad.
     2. El contador de lecturas siempre empieza en 1 en cada sesion, y millis()
        tambien empieza en 0. Es lo esperado, no un fallo.
+
+  ============================================================================
+  INVESTIGACION PREVIA 4: ESTRUCTURAS DE CONTROL
+  ============================================================================
+    if / else if -> decide por RANGOS. Clasifica la distancia en zonas y decide
+                    si toca enviar por el puerto.
+    switch       -> elige entre VALORES discretos. Actua sobre la zona ya
+                    calculada y la traduce al texto que viaja en el CSV.
+    for          -> repite un numero CONOCIDO de veces: las tres lecturas del
+                    sensor con las que se calcula la mediana.
+    while        -> en el sketch no hay ninguno, a proposito: bloquearia la
+                    placa. Donde si aparece, y es su sitio natural, es en los
+                    dos lectores del otro lado: el bucle que escucha el puerto
+                    es un while en Python y otro en C#. Tiene sentido, porque
+                    alli no se sabe cuantas lineas van a llegar, y esperar no
+                    cuesta nada: esa maquina no tiene un sensor que atender.
+
+  ============================================================================
+  INVESTIGACION PREVIA 5: SOPORTA ARDUINO HILOS O TAREAS?
+  ============================================================================
+  Hilos reales NO. El ATmega328P tiene un solo nucleo y no lleva sistema
+  operativo ni planificador, asi que no hay nada que reparta el tiempo entre
+  hilos.
+
+  Concurrencia SI, y es lo que hace este programa. Hay que separar tres cosas:
+
+    Secuencial  -> una instruccion tras otra, bloqueando
+    Concurrente -> varias tareas PROGRESAN INTERCALADAS   (si, con millis)
+    Paralelo    -> varias tareas se ejecutan A LA VEZ     (no: un solo nucleo)
+
+  Aqui el loop() no hace trabajo: reparte turnos. Cada tarea mira el reloj y,
+  si aun no le toca, devuelve el control enseguida. Asi la medicion, el sonido
+  y el envio por el puerto avanzan como si fueran independientes.
+
+  Y con esta practica aparece un cuarto escalon:
+
+    Distribuido -> tareas en MAQUINAS distintas, coordinadas por mensajes
+
+  Que es exactamente lo que son la placa y la computadora: dos programas que no
+  comparten memoria y solo se hablan por el puerto serie.
+
 
   ============================================================================
   MONTAJE - el mismo de la practica 3, sin tocar nada

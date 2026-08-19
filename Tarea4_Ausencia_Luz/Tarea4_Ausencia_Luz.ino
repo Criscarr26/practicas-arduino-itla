@@ -8,6 +8,11 @@
   Institucion: Instituto Tecnologico de Las Americas (ITLA)
   Placa      : Elegoo UNO R3 (compatible Arduino UNO)
 
+  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
+  para depurar, documentar y estructurar este codigo. El montaje fisico, la
+  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
+  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+
   ============================================================================
   QUE PIDE LA OPCION C, TEXTUAL
   ============================================================================
@@ -166,6 +171,32 @@
   MAQUINA DE ESTADOS: en cada vuelta mira el reloj, y si al simbolo actual ya
   se le acabo el tiempo, pasa al siguiente. Entre simbolo y simbolo el
   programa queda libre para hacer lo demas.
+
+  ============================================================================
+  INVESTIGACION PREVIA 5: ESTRUCTURAS DE CONTROL
+  ============================================================================
+    if / else if -> decide por RANGOS. Aqui compara la luz medida contra los
+                    dos umbrales de la histeresis, y decide si a cada simbolo
+                    del Morse le toca sonar o callar.
+    switch       -> elige entre VALORES discretos. Aqui NO se usa, y conviene
+                    decir por que: solo hay dos estados posibles -hay luz o no
+                    la hay- y para dos casos un if se lee mejor que un switch.
+                    En la version de simulador, que maneja varios estados de
+                    temperatura y humedad, si esta justificado y si se usa.
+    for          -> repite un numero CONOCIDO de veces. Aqui tampoco se usa, y
+                    tambien es una decision: recorrer el patron del S.O.S. con
+                    un for obligaria a esperar dentro del bucle, y entonces el
+                    programa dejaria de medir la luz mientras suena la alarma.
+                    En su lugar el patron se recorre con un indice (pasoMorse)
+                    que avanza una posicion por vuelta del loop, sin bloquear.
+    while        -> repite MIENTRAS se cumpla algo. No se usa por la misma
+                    razon que el for. El unico while del programa es el que
+                    Arduino tiene por dentro, que llama a loop() sin parar.
+
+  La conclusion es la interesante: en un programa que no puede bloquearse, los
+  bucles clasicos se sustituyen por una maquina de estados que avanza un paso
+  en cada vuelta. Es el mismo trabajo, repartido en el tiempo.
+
 
   ============================================================================
   MONTAJE
