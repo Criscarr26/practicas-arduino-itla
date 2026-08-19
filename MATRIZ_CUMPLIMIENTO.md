@@ -1,153 +1,150 @@
-# Matriz de cumplimiento — Prácticas 3, 4 y 5
+# Mapa maestro de entregas
 
 **Cristian Carrera — 2024-1932** · IA e IoT 2026-C-2 · Prof. Luis Bessewell Feliz
-Revisión: 14 de agosto de 2026
+Revisión: **18 de agosto de 2026, 20:00**
 
-**Criterio de esta matriz:** no se marca nada como completado solo porque exista código. Cada fila indica si está **implementado**, si está **verificado** (yo lo comprobé), o si está **pendiente de ejecución** por el estudiante.
+> Esta revisión sustituye por completo a la del 14 de agosto, que partía de la premisa
+> equivocada de que no había hardware. Las prácticas 3, 4 y 5 están resueltas **sobre la placa
+> real**, y la práctica 5 se resolvió por **puerto serie**, no por MQTT.
 
 | Símbolo | Significado |
 |---|---|
-| ✅ | Implementado **y verificado** por mí |
-| 🟡 | Implementado, **pendiente de que lo ejecutes** |
-| 📄 | Justificado por escrito (limitación del entorno) |
+| ✅ | Listo para entregar |
+| 🟡 | Casi listo — le falta un detalle concreto |
+| 🔴 | Falta trabajo |
+| ⚠️ | Depende de una acción manual tuya |
 
 ---
 
-## Práctica 3 — Detector de distancia (8 pts)
+## 1. Estado de cada práctica
 
-### Investigación previa
-
-| Requisito | Estado | Evidencia |
-|---|---|---|
-| `if`, `for`, `while`, `switch` | ✅ | §2.1 del `.md` + las cuatro usadas en el `.ino` con comentario de por qué cada una |
-| Distancia máxima del sensor | ✅ | §2.2: **400 cm**, con hoja de datos y fórmula deducida |
-| Cómo funciona el sensor | ✅ | §2.2: eco 40 kHz, pulso 10 µs, `÷29.1` y `÷2` explicados |
-| Sentencia para encender/apagar motor | ✅ | §2.3: `attach()`/`detach()` + alternativas L298N y stepper |
-| ¿Arduino soporta hilos/tareas? | ✅ | §2.4: tabla secuencial/concurrente/paralelo/distribuido |
-
-### Caso práctico
-
-| Criterio del profesor | Estado | Evidencia |
-|---|---|---|
-| **1.** 95 %–5 %: motor ON + LED fijo | 🟡 | `case ZONA_LEJANA` — prueba 2 y 3 |
-| **2.** Fuera de rango: todo apagado | 🟡 | `case FUERA_DE_RANGO` — pruebas 1 y 9 |
-| **3.** 50 %–25 %: LED parpadea + buzzer sincronizado | 🟡 | `case ZONA_MEDIA` — prueba 4 |
-| **4.** 26 %–4 %: parpadeo rápido + sonido particular | 🟡 | `case ZONA_CERCANA`, sirena 2 tonos — prueba 6 |
-| Sincronización LED↔buzzer | ✅ | El `tone()` está **dentro del mismo `if`** que conmuta el LED |
-| **Análisis del solape de rangos** | ✅ | §3 con diagrama; resolución «más cerca manda», justificada |
-| Motor encendido desde el arranque | ✅ | `encenderMotor()` al final de `setup()` |
-
-### Entorno
-
-| Elemento | Estado | Nota |
-|---|---|---|
-| `diagram.json` válido en Wokwi | ✅ | **6 piezas, 0 errores**, pines confirmados contra el DOM |
-| Compilación del sketch | 🟡 | Cola de Wokwi saturada durante la sesión |
-| Casos de prueba ejecutados | 🟡 | 9 casos definidos, pendientes de correr |
+| # | Práctica | Código | Video: funciona | Video: lo explicas | Estado |
+|---|---|---|---|---|---|
+| Reto 1 | Encender y apagar LED | ✅ | ❌ | ❌ | ⚠️ |
+| Tarea 1 | S.O.S. con LED y audio | ✅ | ❌ | ❌ | ⚠️ |
+| Tarea 2 | Mario Bros con LED y audio | ✅ | ❌ | ❌ | ⚠️ |
+| Tarea 3 | Detector de distancia | ✅ | ✅ `Tarea_3.mp4` 1:01 | 🟡 `Reunión…20260816` 13:21 | 🟡 |
+| Tarea 4 | Ausencia de luz (opción C) | ✅ | ✅ `Tarea_4.mp4` 8:47 | ✅ (el mismo) | ✅ |
+| Tarea 5 | Lectura desde otro lenguaje | ✅ | 🔴 | 🔴 | 🔴 |
 
 ---
 
-## Práctica 4 — Temperatura, humedad, luz y display (8 pts)
+## 2. Clases, transcripts y videos
 
-### Investigación previa
+| Clase | Grabación | Transcript | Qué fijó | Tareas |
+|---|---|---|---|---|
+| **Semana 13** | `Treceava Semana…20260807.mp4` (395 MB, Descargas) | ❌ **NO DISPONIBLE** | — | — |
+| **Semana 14** | `Catorceava Semana…20260814.mp4` (292 MB, Descargas) | ✅ | Criterios de entrega + planteamiento de la práctica 5 | 3, 4, 5 |
 
-| Requisito | Estado | Evidencia |
-|---|---|---|
-| `if`, `for`, `while`, `switch` | ✅ | §2.1 |
-| Detector de ausencia de luz | ✅ | §2.3: LDR + divisor de tensión explicado y dibujado |
-| Medidor de temperatura | ✅ | §2.2: termistor NTC, protocolo de un hilo, 40 bits |
-| Medidor de humedad | ✅ | §2.2: sustrato capacitivo |
-| Pantalla de mensajes | ✅ | §2.4: HD44780, modo 4 bits, RS/E, contraste obligatorio |
-| ¿Hilos/tareas? | ✅ | §2.5 |
+**De la Semana 14 salieron las reglas que gobiernan todo lo demás:**
 
-### Caso práctico
+- No subir código a Moodle. La plataforma puede tomar un `.ino` por virus. Va **carpeta
+  compartida**, con subcarpeta por práctica (código + video dentro), y en Moodle solo el enlace.
+- **Dos evidencias por práctica:** que funciona físicamente, y que tú lo explicas con tus
+  palabras. Textual: *«ver que funciona físicamente y ver que tú me estás mostrando y
+  explicando lo que desarrollaste»*.
+- **La IA se acepta si la declaras** y sabes explicar lo entregado.
+- **Sustituir un componente se acepta si se negocia antes.** Autorizó cambiar el motor de la
+  práctica 3.
+- Práctica 5, textual: *«que tú salgas de Arduino, que desde otro lenguaje leas por el puerto
+  lo que él sensa»*, y *«tomen una de esas prácticas y conviértanla»*. Ejemplo de la máquina de
+  coser: medir cuánto se detiene y qué tan rápido trabaja.
+- **Estado borrador no cuenta.** Hay que confirmar el envío.
 
-| Requisito | Estado | Evidencia |
-|---|---|---|
-| **A.** Temp normal → LED verde | 🟡 | `clasificarTemperatura()` — prueba 1 |
-| **A.** Precaución → LED rojo + **zumbido continuo** | 🟡 | `case ZUMBIDO`, `tone()` sin duración — prueba 2 |
-| **A.** Crítico → LED rojo + **S.O.S.** | 🟡 | `case SOS` + `PATRON_SOS[]` — prueba 3 |
-| **B.** Humedad con los tres estados | 🟡 | `clasificarHumedad()` — pruebas 4 y 5 |
-| **C.** S.O.S. **solo** sin luz | 🟡 | `tareaLeerLuz()` + prioridad 3 — prueba 6 |
-| **D.** Display con info dinámica | 🟡 | `tareaPantalla()`, alterna 2 pantallas — todas las pruebas |
-| **Umbrales justificados** | ✅ | §3.1: EPA/ASHRAE 55 para humedad (30–60 %); rangos clínicos para temperatura |
-| Jerarquía entre las tres alarmas | ✅ | §3.2: un solo buzzer, prioridad explícita — prueba 7 |
-
-### Entorno
-
-| Elemento | Estado | Nota |
-|---|---|---|
-| `diagram.json` válido | ✅ | **7 piezas, 0 errores** |
-| Conflicto de pines detectado | ✅ | El LCD ocupaba A0–A5, donde va el LDR. **Corregido** |
-| Conflicto de temporizadores | ✅ | `tone()` usa Timer2 = PWM de pines 3 y 11 → RGB movido a 5, 6, 9 |
-| Compilación | 🟡 | No comprobada |
-| Casos de prueba | 🟡 | 8 definidos, pendientes |
+> ⚠️ **Falta el transcript de la Semana 13.** No se puede descartar que asignara algo que no
+> esté cubierto aquí. La grabación existe; el transcriptor de `tools/transcriptor.html` puede
+> procesarla.
 
 ---
 
-## Práctica 5 — Arduino + Python (8 pts)
+## 3. Tarea 3 — Detector de distancia
 
-| Requisito | Estado | Evidencia |
+**Dos versiones, a propósito:**
+
+| Carpeta | Para qué | Cumple los 4 criterios |
 |---|---|---|
-| Leer datos sensados desde otro lenguaje | 🟡 | `receptor_mqtt.py` en Python |
-| Arquitectura Arduino → transmisión → Python → visualización | ✅ | §2.3 con diagrama del flujo |
-| **Mecanismo técnicamente realista** | ✅ | MQTT sobre WiFi; Wokwi sí da internet a las placas con radio |
-| **Limitación identificada, no ocultada** | 📄 | §2.2: Wokwi no crea puerto COM → `pyserial` imposible |
-| Justificación de la alternativa | ✅ | §2.3 con tabla comparativa serie vs MQTT |
-| Procesamiento en Python | ✅ | Validación JSON **probada con 5 casos límite** |
-| Visualización | 🟡 | CSV + resumen estadístico + gráfica matplotlib |
-| Sintaxis del receptor | ✅ | `py_compile` sin errores |
-| Flujo extremo a extremo | 🟡 | Requiere ejecutar los dos lados a la vez |
+| `Tarea3_Distancia_Fisico/` | La que se graba, sobre la placa | Reinterpretados y **declarados en el encabezado** |
+| `Tarea3_Distancia_Motor/` | Simulador Wokwi, con servo | En su forma literal |
+
+El enunciado da los criterios en porcentajes de 400 cm, y **se solapan**: el criterio 1
+(380–20 cm) contiene enteros al 3 y al 4. El análisis del solape y la regla aplicada
+—*manda el criterio más cercano*— están escritos en el encabezado del sketch físico.
+
+**🟡 Lo que le falta:** el video explicativo es del **16 de agosto** y el **segundo zumbador se
+añadió el 18** (commit `ed746fb`). Explicas una versión con un zumbador y entregas una con dos.
+El demo de hoy sí muestra los dos funcionando.
+
+> **Decisión tuya:** o grabas 30 segundos extra explicando el segundo zumbador, o lo mencionas
+> al entregar. No es un error de código; es que el código mejoró después del video.
 
 ---
 
-## Requisitos transversales del prompt
+## 4. Tarea 4 — Opción C, ausencia de luz
 
-| Requisito | Estado | Nota |
-|---|---|---|
-| No asumir hardware físico | ✅ | Todo diseñado para simulador |
-| Priorizar Arduino Cloud + simulación | 📄 | **Arduino Cloud no tiene simulador** — verificado contra [docs oficiales](https://docs.arduino.cc/arduino-cloud/). Sustituido por Wokwi, documentado en la §9 de cada práctica |
-| No inventar componentes del simulador | ✅ | Las 13 piezas usadas fueron cargadas y verificadas |
-| No inventar funciones de Arduino Cloud | ✅ | Se declara explícitamente lo que no tiene |
-| No cambiar requisitos del profesor | ✅ | Los 4 criterios de distancia y las 4 opciones A–D, íntegros |
-| Porcentajes implementados correctamente | ✅ | Derivados de 400 cm, no escritos a mano |
-| Analizar rangos superpuestos | ✅ | §3 de la práctica 3, con diagrama |
-| Justificar rangos de temperatura y humedad | ✅ | §3.1 de la práctica 4, con fuente |
-| LED, buzzer, motor y display incluidos | ✅ | P3: LED+buzzer+motor · P4: LED RGB+buzzer+display |
-| Investigar concurrencia real | ✅ | En las tres prácticas, con la tabla de 4 conceptos |
-| Método de comunicación realista en P5 | ✅ | MQTT, con la limitación del COM explicada |
-| Explicar limitaciones, no ocultarlas | ✅ | 3 limitaciones declaradas |
-| No agregar complejidad innecesaria | ✅ | 5–6 capturas por práctica, no más |
+El enunciado da cuatro opciones (A temperatura, B humedad, C luz, D cualquiera + display) y
+pide **hacer una**. Se eligió la **C**: *«solo emitir el sonido del S.O.S. cuando no exista luz
+en el entorno»*.
 
----
-
-## Las tres limitaciones declaradas
-
-| # | Limitación | Cómo se resolvió |
-|---|---|---|
-| 1 | **Arduino Cloud no tiene simulador** | Wokwi. Ningún objetivo académico se pierde (tabla en §9) |
-| 2 | **El UNO R3 no es compatible con Arduino IoT Cloud** | Solo el Cloud Editor sirve, y solo para compilar |
-| 3 | **Wokwi no crea puerto COM** | P5 pasa de `pyserial` a MQTT con ESP32 |
-
----
-
-## Lo que falta, y es tuyo
-
-| Tarea | Prácticas |
+| Carpeta | Papel |
 |---|---|
-| Cargar los proyectos en Wokwi y **compilar** | 3, 4, 5 |
-| Ejecutar los **casos de prueba** | 9 + 8 + 8 = 25 casos |
-| Tomar las **capturas** | 6 + 6 + 5 = 17 capturas |
-| Grabar los **videos** | 3 |
-| Ejecutar `receptor_mqtt.py` con Wokwi corriendo | 5 |
+| `Tarea4_Ausencia_Luz/` | **La entrega.** Opción C sobre placa real. Sin librerías |
+| `Tarea4_Humedad_Temp_LED/` | Aporte adicional: las cuatro opciones en simulador |
 
-**Ninguna fila marcada 🟡 debería declararse cumplida ante el profesor hasta que la ejecutes.** Ahí está la diferencia entre «tiene código» y «funciona».
+**✅ Está lista.** Código, calibración y video de 8:47 grabado el 18 de agosto.
+
+> La segunda carpeta se presenta **como extra, nunca como la respuesta al enunciado**. El
+> profesor dijo: primero cumple exactamente lo pedido, y encima agrega tu aporte.
 
 ---
 
-## Nota sobre el hardware
+## 5. Tarea 5 — Lectura desde otro lenguaje
 
-Este trabajo asume que **no tienes hardware**, según el planteamiento más reciente. Si el kit Elegoo sí está disponible, cambian dos cosas:
+Reutiliza el montaje de la Tarea 3 sin tocar un cable. La placa publica CSV por el puerto; del
+otro lado hay **dos lectores**, y ese es el punto: el `.ino` no cambió ni una línea entre uno y
+otro.
 
-- **Prácticas 3 y 4:** funcionan igual en físico, solo cambia el DHT22 por DHT11 (`#define TIPO_DHT DHT11`).
-- **Práctica 5:** con hardware **sí puedes usar `pyserial`**, que es la vía más directa y convincente. El archivo `lector_serial.py` de esta misma carpeta ya la implementa y está probado.
+| Pieza | Estado |
+|---|---|
+| `Tarea5_Distancia_Serial/` — el sketch | ✅ |
+| `lector_distancia.py` — Python | ✅ probado contra la placa |
+| `LectorDistancia/` — C#, Visual Studio 2022 | ✅ probado contra la placa |
+
+### 🔴 El video no sirve
+
+`Tarea_5.mp4` son 15:16 grabados el **14 de agosto**. Ese día tu Tarea 5 era la versión
+**ESP32 + MQTT en simulador**, que hoy está archivada en
+`_Material_de_apoyo/Tarea5_versiones_anteriores/`. El código actual es del 18 de agosto.
+
+**Ese video explica un trabajo que ya no entregas. Hay que regrabarlo.**
+
+---
+
+## 6. Lo que falta, y es tuyo
+
+| # | Qué | Práctica | Por qué no puedo hacerlo yo |
+|---|---|---|---|
+| 1 | **Regrabar el video** | 5 | Tienes que salir tú explicando |
+| 2 | **Crear la carpeta compartida** y subir código + video por subcarpeta | Todas | Requiere tu cuenta |
+| 3 | **Pegar el enlace** en cada tarea de Moodle | Todas | Requiere tu sesión |
+| 4 | **Confirmar el envío** — en borrador no cuenta | Todas | Requiere tu sesión |
+| 5 | Decidir sobre los videos del Reto 1 y las Tareas 1 y 2 | Reto 1, 1, 2 | Ver abajo |
+| 6 | Decidir sobre el segundo zumbador de la Tarea 3 | 3 | Ver §3 |
+
+**Sobre el punto 5:** el Reto 1 y las Tareas 1 y 2 no tienen ningún video. El criterio de las
+dos evidencias se fijó el **14 de agosto**; si esas tres las entregaste antes, probablemente se
+rigen por las reglas anteriores. **Si aún no están enviadas, necesitan video.**
+
+---
+
+## 7. Qué NO hay que tocar
+
+Verificado práctica por práctica contra el enunciado y contra lo que el profesor dijo en clase:
+
+- La lógica de las seis prácticas cumple lo que pide cada enunciado.
+- Los montajes coinciden con lo que declara cada `diagram.json`.
+- Las prácticas 3, 4 y 5 no llaman a `delay()` — usan multitarea cooperativa con `millis()`.
+  (Matiz honesto: en las 3 y 5, `pulseIn()` sí bloquea hasta 25 ms esperando el eco.)
+- La histéresis de la Tarea 4 y el filtro de mediana de la Tarea 3 están bien resueltos.
+
+**No se cambió el comportamiento de ningún programa en esta revisión.** Todo lo que se tocó
+fueron comentarios, documentación, y un respaldo que el lector de Python prometía y no tenía.

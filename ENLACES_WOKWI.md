@@ -2,7 +2,22 @@
 
 **Cristian Carrera — 2024-1932** · IA e IoT 2026-C-2 · Prof. Luis Bessewell Feliz
 
-Los seis proyectos están **guardados, públicos y compilados**. Se abren sin iniciar sesión.
+Los seis proyectos están guardados y son públicos. Se abren sin iniciar sesión.
+
+> ### ⚠️ AVISO DE ALCANCE — leer antes de usar estos enlaces
+>
+> Este documento es de **agosto 13**, de cuando todo se resolvía en simulador. Ya no describe
+> lo que se entrega. En concreto:
+>
+> - **La Tarea 5 de aquí es la versión ESP32 + MQTT, que quedó descartada.** Lo que se entrega
+>   publica CSV por el puerto serie y se lee desde Python y desde C#. Esa versión archivada
+>   está en `_Material_de_apoyo/Tarea5_versiones_anteriores/`.
+> - **La Tarea 3 de aquí registra «Motor: ON»**, que solo existe en la versión con servo. La
+>   que se graba sobre la placa no lleva motor: el profesor autorizó sustituirlo.
+> - Las prácticas **3, 4 y 5 que se entregan corren sobre la placa real**, no en Wokwi. Estos
+>   enlaces sirven solo para las dos versiones de simulador, que van como aporte adicional.
+>
+> El estado real de cada entrega está en [`MATRIZ_CUMPLIMIENTO.md`](MATRIZ_CUMPLIMIENTO.md).
 
 ---
 
