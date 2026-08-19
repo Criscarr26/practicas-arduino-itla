@@ -6,6 +6,11 @@
   Profesor   : Luis Bessewell Feliz
   Estudiante : Cristian Carrera - Matricula 2024-1932
   Institucion: Instituto Tecnologico de Las Americas (ITLA)
+
+  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
+  para depurar, documentar y estructurar este codigo. El montaje fisico, la
+  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
+  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
   Entorno    : simulador Wokwi (placa Arduino UNO)
 
   ============================================================================

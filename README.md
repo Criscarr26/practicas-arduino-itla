@@ -151,15 +151,30 @@ el color cambiaría solo cada vez que sonara la alarma.
 **El UNO R3 no es compatible con Arduino IoT Cloud** (no tiene conectividad). Sí funciona con
 el *Cloud Editor* para compilar y cargar desde el navegador.
 
-**Ninguna de las prácticas 3, 4 y 5 usa `delay()`.** Todas están escritas con multitarea
+**Ninguna de las prácticas 3, 4 y 5 llama a `delay()`.** Todas están escritas con multitarea
 cooperativa basada en `millis()`, porque tienen que atender varias tareas con ritmos distintos
 al mismo tiempo. Es la respuesta práctica a la pregunta de investigación sobre si Arduino
 soporta programación en hilos o tareas: hilos reales no, pero concurrencia sí.
+
+Con un matiz honesto: en las prácticas 3 y 5, `pulseIn()` **sí bloquea** mientras espera el eco
+del HC-SR04, hasta 25 ms por intento, y la medición filtrada lo llama tres veces. `delay()` no
+se usa en ninguna parte, pero eso no es lo mismo que decir que nada bloquea. La práctica 4 sí
+está libre de bloqueos: `analogRead()` tarda unos 100 µs y no espera a nada.
+
+---
+
+## Declaración de uso de inteligencia artificial
+
+Se usó **asistencia de IA (Claude)** en la elaboración de estas prácticas: para depurar, para
+documentar y para estructurar el código. Son propios el montaje físico, la calibración de los
+umbrales, las pruebas sobre la placa real y la explicación grabada en cada video.
+
+El profesor fijó en clase que el uso de IA es aceptable **siempre que se declare y se sepa
+explicar lo entregado**. Esta declaración aparece también en la cabecera de cada sketch.
 
 ---
 
 ## Licencia
 
-Trabajo académico. El código es de elaboración propia. El logo del ITLA pertenece al
-Instituto Tecnológico de Las Américas y se usa aquí únicamente para identificar la institución
-en la que se presenta este trabajo.
+Trabajo académico. El logo del ITLA pertenece al Instituto Tecnológico de Las Américas y se usa
+aquí únicamente para identificar la institución en la que se presenta este trabajo.
