@@ -1,20 +1,15 @@
 /*
   ============================================================================
-  TAREA 1 - Señal de socorro S.O.S. en codigo Morse, con luz y sonido
+  S.O.S. en codigo Morse, con luz y sonido
   ============================================================================
-  Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
-  Profesor   : Luis Bessewell Feliz
-  Estudiante : Cristian Carrera - Matricula 2024-1932
-  Institucion: Instituto Tecnologico de Las Americas (ITLA)
-  Placa      : Elegoo UNO R3 (compatible Arduino UNO)
+  Autor : Cristian Carrera
+  Placa : Elegoo UNO R3 (compatible Arduino UNO)
 
-  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
-  para depurar, documentar y estructurar este codigo. El montaje fisico, la
-  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
-  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+  Se uso asistencia de IA (Claude) para depurar y documentar. El montaje, la
+  calibracion y las pruebas sobre la placa son propios.
 
   ============================================================================
-  INVESTIGACION PREVIA (lo que pide el enunciado)
+  INVESTIGACION PREVIA
   ============================================================================
 
   1) SENTENCIA PARA ENCENDER Y APAGAR UN LED
@@ -101,8 +96,8 @@ void setup() {
   pinMode(PIN_LED,      OUTPUT);
   pinMode(PIN_ZUMBADOR, OUTPUT);
 
-  Serial.println(F("== Tarea 1: S.O.S. en codigo Morse =="));
-  Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
+  Serial.println(F("== S.O.S. en codigo Morse =="));
+  Serial.println(F("Cristian Carrera"));
   Serial.print(F("Unidad basica: "));
   Serial.print(UNIDAD);
   Serial.println(F(" ms"));
@@ -151,7 +146,7 @@ void emitirLetraO() {
 // Emite UN simbolo: enciende luz y sonido a la vez durante el tiempo pedido,
 // los apaga, y deja la pausa que corresponde entre simbolos.
 //
-// Toda la practica se reduce a esta funcion: las dos sentencias investigadas,
+// Todo el programa se reduce a esta funcion: las dos sentencias investigadas,
 // sincronizadas. Al recibir la duracion como parametro, la misma funcion
 // sirve para el punto y para la raya; lo unico que cambia es el numero.
 // ---------------------------------------------------------------------------

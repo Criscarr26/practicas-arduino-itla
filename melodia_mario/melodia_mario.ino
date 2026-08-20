@@ -1,21 +1,16 @@
 /*
   ============================================================================
-  TAREA 2 - Melodia introductoria de Super Mario Bros con luz y sonido
+  Melodia de Super Mario Bros, con luz sincronizada
   ============================================================================
-  Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
-  Profesor   : Luis Bessewell Feliz
-  Estudiante : Cristian Carrera - Matricula 2024-1932
-  Institucion: Instituto Tecnologico de Las Americas (ITLA)
-  Placa      : Elegoo UNO R3 (compatible Arduino UNO)
+  Autor : Cristian Carrera
+  Placa : Elegoo UNO R3 (compatible Arduino UNO)
 
-  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
-  para depurar, documentar y estructurar este codigo. El montaje fisico, la
-  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
-  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+  Se uso asistencia de IA (Claude) para depurar y documentar. El montaje, la
+  calibracion y las pruebas sobre la placa son propios.
   Duracion   : unos 9 segundos por pasada (cronometrado, no estimado)
 
   ============================================================================
-  INVESTIGACION PREVIA (lo que pide el enunciado)
+  INVESTIGACION PREVIA
   ============================================================================
 
   1) SENTENCIA PARA ENCENDER Y APAGAR UN LED
@@ -80,7 +75,7 @@
      duraciones[]-> cuanto dura cada nota, como divisor de una redonda
                     (4 = negra, 8 = corchea, 16 = semicorchea)
 
-  El calculo del enunciado clasico de Arduino es:
+  El calculo clasico de Arduino es:
 
      duracionNota = 1000 / duraciones[i];
 
@@ -201,8 +196,8 @@ void setup() {
   pinMode(PIN_LED,      OUTPUT);
   pinMode(PIN_ZUMBADOR, OUTPUT);
 
-  Serial.println(F("== Tarea 2: Super Mario Bros con luz y sonido =="));
-  Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
+  Serial.println(F("== Melodia de Super Mario Bros =="));
+  Serial.println(F("Cristian Carrera"));
   Serial.print(F("Notas en la melodia: "));
   Serial.println(TOTAL_NOTAS);
   Serial.println();

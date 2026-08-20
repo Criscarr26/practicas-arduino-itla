@@ -1,180 +1,152 @@
-<p align="center">
-  <img src="itla_logo.png" alt="ITLA" width="190">
-</p>
+# Proyectos de Arduino
 
-<h1 align="center">Prácticas de laboratorio — Arduino</h1>
+Colección de ocho proyectos sobre una **Arduino UNO R3**, del LED que parpadea hasta un sistema
+de telemetría en el que la placa publica sus lecturas por el puerto serie y otro programa, en
+otra máquina y en otro lenguaje, las recibe y las analiza.
 
-<p align="center">
-  <b>Inteligencia Artificial e Internet de las Cosas — 2026-C-2</b><br>
-  Instituto Tecnológico de Las Américas (ITLA)
-</p>
-
-| | |
-|---|---|
-| **Facilitador** | Luis Bessewell Feliz |
-| **Sustentante** | Cristian Carrera — Matrícula 2024-1932 |
-| **Correo** | 20241932@itla.edu.do |
-| **Placa** | Elegoo UNO R3 (Super Starter Kit) |
+No son ejemplos copiados. Cada sketch lleva en su cabecera por qué está resuelto así: qué se
+investigó antes de escribirlo, qué se probó, y qué falló por el camino.
 
 ---
 
-## Las prácticas
+## Los proyectos
 
-| # | Carpeta | Qué hace |
-|---|---|---|
-| Reto 1 | [`Reto1_Encender_Apagar_LED/`](Reto1_Encender_Apagar_LED) | Encender y apagar un LED |
-| Tarea 1 | [`Tarea1_SOS_LED_Audio/`](Tarea1_SOS_LED_Audio) | S.O.S. en código Morse con luz y sonido |
-| Tarea 2 | [`Tarea2_Mario_LED_Audio/`](Tarea2_Mario_LED_Audio) | Melodía de Super Mario Bros con luz sincronizada |
-| Tarea 3 | [`Tarea3_Distancia_Motor/`](Tarea3_Distancia_Motor) | HC-SR04 que gobierna un servo por rangos — **simulador** |
-| Tarea 3 | [`Tarea3_Distancia_Fisico/`](Tarea3_Distancia_Fisico) | HC-SR04 con aviso sonoro proporcional — **placa real** |
-| Tarea 4 | [`Tarea4_Ausencia_Luz/`](Tarea4_Ausencia_Luz) | LDR que emite S.O.S. al faltar la luz — **opción C, placa real** |
-| Tarea 4 | [`Tarea4_Humedad_Temp_LED/`](Tarea4_Humedad_Temp_LED) | DHT11 + LED RGB + alarma + LCD1602 — las cuatro opciones, simulador |
-| Tarea 5 | [`Tarea5_Arduino_Python/`](Tarea5_Arduino_Python) | El sensor de la Tarea 3 leído **desde Python y desde C#** por el puerto serie |
-
-Cada carpeta trae el **`.ino`** con la investigación previa documentada en el encabezado, y
-las que están pensadas para el simulador traen además un **`diagram.json`** listo para pegar
-en [Wokwi](https://wokwi.com).
-
-### Qué hace la Tarea 5
-
-El profesor lo planteó así: *«yo lo que quiero es que tú salgas de Arduino… que desde otro
-lenguaje leas por el puerto lo que él sensa»*, y dejó abierto el tema — *«tomen una de esas
-prácticas y conviértanla»*.
-
-Así que **no se monta nada nuevo**: se reutiliza tal cual el montaje de la Tarea 3, y lo que se
-añade es que la placa, además de avisar por sonido, publique cada lectura en CSV por el puerto.
-Del otro lado, Python la recibe, la tabula en vivo, la guarda y saca un informe.
-
-El informe mide lo mismo que el profesor puso de ejemplo con la máquina de coser —*cuánto se
-detiene, qué tan rápido trabaja*—: tiempo en cada zona, tiempo en marcha frente a detenida,
-cuántas veces tuvo que parar y cuál fue la parada más larga.
-
-Es además el tercer escalón del tema de la asignatura: dos programas en dos máquinas distintas
-que no comparten memoria y se coordinan solo por mensajes. Eso es **programación distribuida**.
-
-Está resuelta **dos veces, en dos lenguajes distintos**, y esa es justamente la gracia: la placa
-no sabe ni le importa quién la escucha. Publica el mismo CSV por el puerto y del otro lado da
-igual que haya un intérprete de Python o un ejecutable de .NET. Cambiar el lenguaje del que
-consume no obligó a tocar ni una línea del `.ino`.
-
-| Versión | Cómo se ejecuta |
+| Carpeta | Qué hace |
 |---|---|
-| `lector_distancia.py` | `python lector_distancia.py` — necesita `pip install pyserial` |
-| `LectorDistancia/` | Abrir `LectorDistancia.sln` en **Visual Studio 2022** y pulsar *Iniciar*, o `dotnet run` |
+| [`parpadeo_led/`](parpadeo_led) | Encender y apagar un LED. El punto de partida |
+| [`sos_morse/`](sos_morse) | S.O.S. en código Morse, por LED y zumbador sincronizados |
+| [`melodia_mario/`](melodia_mario) | El tema de Super Mario Bros, con el LED siguiendo cada nota |
+| [`sensor_distancia/`](sensor_distancia) | HC-SR04 con dos zumbadores: uno pulsa más rápido al acercarse, otro suena continuo al detenerse |
+| [`sensor_distancia_servo/`](sensor_distancia_servo) | La misma idea gobernando un servo — **simulador** |
+| [`detector_oscuridad/`](detector_oscuridad) | Fotorresistencia con histéresis que emite S.O.S. mientras no hay luz |
+| [`estacion_ambiental/`](estacion_ambiental) | DHT11 + LDR + LED RGB + LCD 16x2 — **simulador** |
+| [`telemetria_serie/`](telemetria_serie) | La placa publica CSV por el puerto; se lee desde **Python y C#** |
 
-Las dos aceptan un número de segundos para que la captura se detenga sola —`dotnet run 30`— y
-si no se les pasa nada, corren hasta que se pulse **Ctrl+C**. Ambas guardan el CSV y sacan el
-mismo informe.
-
-Dos detalles del puerto serie que costaron un rato y conviene no olvidar:
-
-- **`SerialPort` de .NET no levanta DTR por su cuenta**, y pyserial sí. Sin `DtrEnable = true`
-  la placa no se reinicia al conectarse, así que la numeración de lecturas continúa donde la
-  dejó la sesión anterior en vez de empezar en 1.
-- **El puerto admite un solo programa a la vez.** Si el Monitor Serie del IDE está abierto, o
-  quedó corriendo el lector de Python, el otro falla con *acceso denegado*.
-
-### Por qué la Tarea 4 tiene dos versiones
-
-El enunciado plantea cuatro opciones —A temperatura, B humedad, C ausencia de luz, y D
-cualquiera de esas más un display— y pide **elegir una**.
-
-- **`Tarea4_Ausencia_Luz`** es la opción C, la que corre en la placa: fotorresistencia con
-  divisor de tensión, y un S.O.S. en Morse mientras no haya luz. No usa ninguna librería.
-- **`Tarea4_Humedad_Temp_LED`** hace las cuatro a la vez y está pensada para el simulador.
-  Necesita el DHT, el LCD y su potenciómetro.
-
-### Por qué la Tarea 3 tiene dos versiones
-
-No conseguí el motor a tiempo y lo negocié con el profesor antes de la entrega. Lo que se
-evalúa es el objetivo —medir distancia y decidir cuándo algo debe continuar o detenerse—, no
-la pieza concreta.
-
-- **`Tarea3_Distancia_Motor`** es la versión completa con servomotor, y corre en el simulador.
-- **`Tarea3_Distancia_Fisico`** es la que corre en la placa real. Lleva **dos zumbadores**,
-  cada uno con un mensaje distinto: el del pin 9 pulsa más rápido cuanto más cerca está el
-  obstáculo, y el del pin 8 suena continuo solo cuando la máquina debe detenerse. No usa la
-  librería `Servo`.
-
-  Un detalle del hardware: en el UNO, `tone()` solo puede sonar en un pin a la vez, porque usa
-  un único temporizador. Por eso los dos zumbadores no pueden ser pasivos — aquí uno es activo
-  y el otro pasivo.
+Las carpetas marcadas como simulador traen un `diagram.json` listo para pegar en
+[wokwi.com](https://wokwi.com); las demás corren sobre la placa real.
 
 ---
 
-## Cómo ejecutar cada práctica
+## Lo que tiene de interesante
 
-### En el simulador, sin hardware
+### Telemetría: el mismo problema, dos lenguajes
 
-1. Entra a [wokwi.com](https://wokwi.com) y crea un proyecto nuevo de **Arduino UNO**.
-2. Pega el `.ino` en la pestaña del sketch.
-3. Pega el `diagram.json` en la pestaña de ese mismo nombre: el montaje aparece ya cableado.
-4. **Start simulation**.
+`telemetria_serie/` es el proyecto que más enseña. La placa mide, avisa por sonido y **publica
+cada lectura en CSV por el puerto serie**. Del otro lado hay dos programas que hacen lo mismo:
+uno en Python y otro en C#.
 
-### Con la placa física
+Lo interesante es lo que **no** pasó: para escribir el segundo lector no hubo que tocar ni una
+línea del firmware. La placa publica y sigue; no espera respuesta ni sabe quién la escucha. Si
+se desconecta la computadora, los zumbadores siguen funcionando igual.
 
-Abre el `.ino` en el Arduino IDE, selecciona *Arduino UNO* y el puerto, y pulsa **Subir**.
+Son dos programas, en dos máquinas, que no comparten memoria y se coordinan solo por mensajes.
+
+Dos detalles del puerto serie que costaron horas y no aparecen en los tutoriales:
+
+- **`SerialPort` de .NET no levanta la señal DTR por su cuenta, y pyserial sí.** Sin
+  `DtrEnable = true` la placa no se reinicia al conectarse, y la numeración de lecturas continúa
+  donde la dejó la sesión anterior en vez de empezar en 1.
+- **Hay que vaciar el buffer *antes* de esperar el arranque, no después.** Al revés se pierde la
+  línea de cabecera, que la placa manda una sola vez y no repite nunca.
+
+### Histéresis: por qué dos umbrales y no uno
+
+En `detector_oscuridad/`, lo natural sería un solo número: por debajo de 300, oscuro. El
+problema es la frontera — la lectura nunca es estable y el detector entra y sale de la alarma
+varias veces por segundo.
+
+La solución son **dos umbrales separados**: entra en alarma a 280 y sale a 380. Entre medio no
+pasa nada. Es el mismo principio del termostato de una nevera.
+
+Y los umbrales están **calibrados, no copiados**: el programa imprime el mínimo y el máximo que
+ha visto desde que arrancó, porque los valores de una LDR dependen del modelo, de la resistencia
+fija y de la luz del sitio.
+
+### Concurrencia sin hilos
+
+El ATmega328P tiene **un núcleo y ningún sistema operativo**: hilos reales no hay. Pero
+concurrencia sí, y en varios de estos proyectos hace falta de verdad — mientras suena el S.O.S.
+hay que seguir midiendo la luz, para que la alarma se corte en el acto al encenderse una lámpara.
+
+Con `delay()` eso es imposible: el ciclo completo del S.O.S. dura unos cinco segundos y durante
+todos ellos el micro estaría bloqueado.
+
+Por eso **ninguno de los proyectos con sensores llama a `delay()`**. El `loop()` no hace trabajo:
+es un planificador que ofrece el turno a cada tarea, y cada una decide si le toca mirando
+`millis()`. El S.O.S. está escrito como máquina de estados que avanza un símbolo por vuelta.
+
+> Matiz honesto: en los proyectos con HC-SR04, `pulseIn()` **sí bloquea** mientras espera el eco,
+> hasta 25 ms por intento, y la medición filtrada lo llama tres veces. `delay()` no se usa en
+> ninguna parte, pero eso no es lo mismo que decir que nada bloquea.
+
+---
+
+## Cómo ejecutarlos
+
+### Con la placa
+
+Abrir el `.ino` en el Arduino IDE, seleccionar *Arduino UNO* y el puerto, y pulsar **Subir**.
+
+Para `telemetria_serie/`, además, del lado de la computadora:
+
+```bash
+python lector_distancia.py
+```
+
+o abrir `LectorDistancia.sln` en Visual Studio 2022 y pulsar **F5**.
+
+> El puerto serie admite **un solo programa a la vez**. Si el Monitor Serie del IDE está abierto,
+> el lector falla con *acceso denegado*.
+
+### En el simulador
+
+Crear un proyecto de Arduino UNO en [wokwi.com](https://wokwi.com), pegar el `.ino` en la pestaña
+del sketch y el `diagram.json` en la suya. El montaje aparece ya cableado.
 
 ---
 
 ## Librerías
 
-Desde el IDE: **Programa → Incluir Librería → Administrar Bibliotecas**
-
-| Práctica | Librería |
+| Proyecto | Qué hace falta |
 |---|---|
-| Reto 1, Tareas 1 y 2 | ninguna |
-| Tarea 3 — versión simulador | `Servo` |
-| Tarea 3 — versión física | **ninguna** |
-| Tarea 4 — opción C, física | **ninguna** |
-| Tarea 4 — simulador | `DHT sensor library` de Adafruit + `Adafruit Unified Sensor` |
-| Tarea 5 — placa | **ninguna** |
-| Tarea 5 — Python | `pip install pyserial` |
-| Tarea 5 — C# | paquete NuGet `System.IO.Ports` (ya declarado en el `.csproj`) |
-
-La `Servo` no viene instalada de fábrica: hay que añadirla desde el Administrador de
-Bibliotecas. Si al compilar la versión física aparece un aviso pidiendo instalar algo de
-motores, es que está abierto el sketch del simulador y no el de la placa.
+| `parpadeo_led`, `sos_morse`, `melodia_mario` | nada |
+| `sensor_distancia`, `detector_oscuridad` | **nada** |
+| `telemetria_serie` — la placa | **nada** |
+| `telemetria_serie` — Python | `pip install pyserial` |
+| `telemetria_serie` — C# | `System.IO.Ports` (ya en el `.csproj`) |
+| `sensor_distancia_servo` | `Servo` |
+| `estacion_ambiental` | `DHT sensor library` + `Adafruit Unified Sensor` |
 
 ---
 
-## Notas técnicas que conviene leer
+## Notas de hardware que conviene saber
 
-**El LCD1602 del kit Elegoo es de pines paralelos, sin adaptador I2C.** Por eso la práctica 4
-usa la librería `LiquidCrystal` y **no** `LiquidCrystal_I2C`. Necesita además un potenciómetro
-de 10k para el contraste: sin él la pantalla se ve en blanco y parece que el código falla.
+**`tone()` usa el Timer2 del ATmega328P**, que es el mismo que genera el PWM de los pines 3 y 11.
+Por eso en `estacion_ambiental` el LED RGB va en los pines 5, 6 y 9: en el 3 o el 11 el color
+cambiaría solo cada vez que sonara la alarma.
 
-**`tone()` usa el Timer2 del ATmega328P**, que es el mismo que genera el PWM de los pines 3 y
-11. Por eso en la práctica 4 el LED RGB va en los pines 5, 6 y 9: si estuviera en el 3 o el 11,
-el color cambiaría solo cada vez que sonara la alarma.
+**En el UNO, `tone()` solo puede sonar en un pin a la vez.** Por eso los dos zumbadores de
+`sensor_distancia` no pueden ser los dos pasivos: uno es activo y el otro pasivo.
 
-**El UNO R3 no es compatible con Arduino IoT Cloud** (no tiene conectividad). Sí funciona con
-el *Cloud Editor* para compilar y cargar desde el navegador.
+**El LCD1602 del kit Elegoo es de pines paralelos, sin adaptador I2C.** Usa `LiquidCrystal`, no
+`LiquidCrystal_I2C`, y necesita un potenciómetro de 10k para el contraste. Sin él la pantalla se
+ve en blanco y parece que el código falla. Si no hay potenciómetro, sirve una resistencia fija
+entre V0 y GND.
 
-**Ninguna de las prácticas 3, 4 y 5 llama a `delay()`.** Todas están escritas con multitarea
-cooperativa basada en `millis()`, porque tienen que atender varias tareas con ritmos distintos
-al mismo tiempo. Es la respuesta práctica a la pregunta de investigación sobre si Arduino
-soporta programación en hilos o tareas: hilos reales no, pero concurrencia sí.
-
-Con un matiz honesto: en las prácticas 3 y 5, `pulseIn()` **sí bloquea** mientras espera el eco
-del HC-SR04, hasta 25 ms por intento, y la medición filtrada lo llama tres veces. `delay()` no
-se usa en ninguna parte, pero eso no es lo mismo que decir que nada bloquea. La práctica 4 sí
-está libre de bloqueos: `analogRead()` tarda unos 100 µs y no espera a nada.
+**Hay dos tipos de zumbador.** El pasivo necesita `tone()` para sonar; el activo trae su propio
+oscilador y basta con darle corriente. Confundirlos hace perder tardes enteras: el código está
+bien y no suena nada.
 
 ---
 
-## Declaración de uso de inteligencia artificial
+## Uso de inteligencia artificial
 
-Se usó **asistencia de IA (Claude)** en la elaboración de estas prácticas: para depurar, para
-documentar y para estructurar el código. Son propios el montaje físico, la calibración de los
-umbrales, las pruebas sobre la placa real y la explicación grabada en cada video.
-
-El profesor fijó en clase que el uso de IA es aceptable **siempre que se declare y se sepa
-explicar lo entregado**. Esta declaración aparece también en la cabecera de cada sketch.
+Usé **asistencia de IA (Claude)** para depurar y documentar. Son míos el montaje, la calibración
+de los umbrales y las pruebas sobre la placa.
 
 ---
 
 ## Licencia
 
-Trabajo académico. El logo del ITLA pertenece al Instituto Tecnológico de Las Américas y se usa
-aquí únicamente para identificar la institución en la que se presenta este trabajo.
+Código libre de usar. Los tutoriales de los que partieron algunos sketches están citados en la
+cabecera de cada uno.

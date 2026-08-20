@@ -1,23 +1,18 @@
 """
 ================================================================================
-TAREA 5 - Leer desde Python lo que sensa el Arduino   (parte 2 de 2)
+Telemetria por puerto serie  -  lector en Python
 ================================================================================
-Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
-Profesor   : Luis Bessewell Feliz
-Estudiante : Cristian Carrera - Matricula 2024-1932
-Institucion: Instituto Tecnologico de Las Americas (ITLA)
+Autor : Cristian Carrera
 
-Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
-para depurar, documentar y estructurar este codigo. El montaje fisico, la
-calibracion, las pruebas sobre la placa y la explicacion del video son propios.
-El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+Se uso asistencia de IA (Claude) para depurar y documentar. El montaje, la
+calibracion y las pruebas sobre la placa son propios.
 
 Se conecta al Arduino por el puerto serie, recibe las lecturas del sensor de
 distancia, las muestra en vivo, las guarda en un CSV y, al terminar, saca un
 informe con estadisticas y una grafica.
 
 La parte 1 es el sketch de la placa, en la carpeta de al lado:
-    Tarea5_Distancia_Serial/Tarea5_Distancia_Serial.ino
+    firmware_arduino/firmware_arduino.ino
 
 --------------------------------------------------------------------------------
 COMO SE USA
@@ -36,7 +31,7 @@ programa no puede entrar.
 --------------------------------------------------------------------------------
 QUE APORTA PYTHON QUE EL ARDUINO NO PUEDE HACER
 --------------------------------------------------------------------------------
-Esta es la razon de ser de la practica. El UNO tiene 2 KB de RAM: no puede
+Esta es la razon de ser del proyecto. El UNO tiene 2 KB de RAM: no puede
 guardar un historico ni dibujar nada. Lo que sabe hacer es medir el mundo
 fisico en tiempo real, y hacerlo bien.
 
@@ -46,7 +41,7 @@ le sobra memoria y disco.
     Arduino  ->  sensa y avisa
     Python   ->  recibe, guarda, analiza y grafica
 
-En clase el profesor lo planteo con el ejemplo de una maquina de coser: poner
+La idea viene del ejemplo de una maquina de coser: poner
 un sensor y medir "cuanto se detiene, que tan rapido hace". Eso es justo lo
 que calcula el informe del final: cuanto tiempo estuvo la maquina en marcha,
 cuanto detenida, y cuantas veces tuvo que parar.
@@ -199,7 +194,7 @@ def informe(filas):
         print(f"     {zona:<9} {seg:6.1f} s  {n/total*100:5.1f} %  {barra}")
 
     # --- La maquina: en marcha o detenida -----------------------------------
-    # Esto es lo que el profesor planteo con el ejemplo de la maquina de coser:
+    # Esto es lo del ejemplo de la maquina de coser:
     # medir cuanto trabaja y cuanto se detiene.
     en_marcha = sum(1 for f in filas if f["ESTADO"] == "EN_MARCHA")
     detenida = total - en_marcha
@@ -269,7 +264,7 @@ def graficar(filas):
 
     ax.set_xlabel("Tiempo (s)")
     ax.set_ylabel("Distancia (cm)")
-    ax.set_title("Tarea 5 - Distancia leida desde Python\n"
+    ax.set_title("Distancia leida desde Python\n"
                  "Las franjas rojas son los tramos con la maquina detenida",
                  fontsize=11)
     ax.grid(alpha=0.25)
@@ -287,8 +282,8 @@ def graficar(filas):
 # =============================================================================
 def main():
     print("=" * 66)
-    print("TAREA 5 - Lectura del sensor de distancia desde Python")
-    print("Cristian Carrera - 2024-1932 - ITLA")
+    print("Telemetria por puerto serie - lector en Python")
+    print("Cristian Carrera")
     print("=" * 66 + "\n")
 
     puerto = sys.argv[1] if len(sys.argv) > 1 else detectar_puerto()
@@ -370,7 +365,7 @@ def main():
 
     if not filas:
         print("No llego ningun dato valido. Comprueba que subiste el sketch "
-              "Tarea5_Distancia_Serial a la placa.")
+              "firmware_arduino a la placa.")
         return
 
     # --- Guardar ------------------------------------------------------------

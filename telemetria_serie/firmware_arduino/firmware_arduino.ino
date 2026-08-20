@@ -1,30 +1,25 @@
 /*
   ============================================================================
-  TAREA 5 - Leer desde Python lo que sensa el Arduino   (parte 1 de 2)
+  Telemetria por puerto serie  -  firmware de la placa
   ============================================================================
-  Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
-  Profesor   : Luis Bessewell Feliz
-  Estudiante : Cristian Carrera - Matricula 2024-1932
-  Institucion: Instituto Tecnologico de Las Americas (ITLA)
-  Placa      : Elegoo UNO R3 (compatible Arduino UNO)
+  Autor : Cristian Carrera
+  Placa : Elegoo UNO R3 (compatible Arduino UNO)
 
-  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
-  para depurar, documentar y estructurar este codigo. El montaje fisico, la
-  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
-  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+  Se uso asistencia de IA (Claude) para depurar y documentar. El montaje, la
+  calibracion y las pruebas sobre la placa son propios.
 
   La parte 2 es el programa lector, escrito en Python, que esta en la carpeta
   de al lado: lector_distancia.py
 
   ============================================================================
-  QUE PIDE ESTA PRACTICA
+  EL OBJETIVO
   ============================================================================
-  El profesor lo planteo asi en clase: "yo lo que quiero es que tu SALGAS de
+  La idea de partida era esta: "SALIR de
   Arduino... que desde otro lenguaje leas por el puerto lo que el sensa".
-  Y dejo abierto el tema: "tomen una de esas practicas y conviertanla".
+  Y en vez de empezar de cero, convertir uno de los proyectos ya hechos.
 
   Asi que aqui NO se monta nada nuevo. Se reutiliza tal cual el montaje de la
-  practica 3 -el sensor de distancia con sus dos zumbadores- y lo que se
+  proyecto del sensor de distancia -con sus dos zumbadores- y lo que se
   agrega es que la placa, ademas de avisar por sonido, PUBLIQUE cada lectura
   por el puerto serie para que otro programa la reciba.
 
@@ -44,7 +39,7 @@
 
   Y ademas es un caso de PROGRAMACION DISTRIBUIDA: dos programas, en dos
   maquinas distintas, que no comparten memoria y se coordinan solo por
-  mensajes. Es el tercer escalon del tema de la asignatura:
+  mensajes. Es el tercer escalon del tema:
 
         Secuencial  -> una instruccion tras otra
         Concurrente -> varias tareas intercaladas en un nucleo   (el loop)
@@ -135,7 +130,7 @@
   si aun no le toca, devuelve el control enseguida. Asi la medicion, el sonido
   y el envio por el puerto avanzan como si fueran independientes.
 
-  Y con esta practica aparece un cuarto escalon:
+  Y aqui aparece un cuarto escalon:
 
     Distribuido -> tareas en MAQUINAS distintas, coordinadas por mensajes
 
@@ -144,7 +139,7 @@
 
 
   ============================================================================
-  MONTAJE - el mismo de la practica 3, sin tocar nada
+  MONTAJE - el mismo de sensor_distancia, sin tocar nada
   ============================================================================
      HC-SR04                 Arduino
        VCC ---------------->   5V
@@ -166,7 +161,7 @@
 */
 
 // ---------------------------------------------------------------------------
-// Mapa de pines - identico al de la practica 3
+// Mapa de pines - identico al de sensor_distancia
 // ---------------------------------------------------------------------------
 const int PIN_ECHO = 2;
 const int PIN_TRIG = 3;
@@ -177,7 +172,7 @@ const int PIN_ZUMBADOR_FIJO  = 8;   // tono continuo cuando hay que PARAR
 const int PIN_LED = 13;             // LED de la placa, con su resistencia
 
 // ---------------------------------------------------------------------------
-// Tipo de cada zumbador (ver la practica 3).
+// Tipo de cada zumbador (ver sensor_distancia).
 // En el UNO tone() solo suena en un pin a la vez: los dos no pueden ser
 // pasivos.
 // ---------------------------------------------------------------------------
@@ -318,7 +313,7 @@ unsigned long intervaloPorDistancia(float d) {
 }
 
 // ===========================================================================
-// TAREA 2 - Los dos zumbadores y el LED (igual que en la practica 3)
+// TAREA 2 - Los dos zumbadores y el LED (igual que en sensor_distancia)
 // ===========================================================================
 void tareaSonido(unsigned long ahora) {
   if (!SONIDO_ACTIVO) return;

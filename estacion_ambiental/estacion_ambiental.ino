@@ -1,19 +1,13 @@
 /*
   ============================================================================
-  TAREA 4 - Temperatura, humedad, luz y display
-               Opciones A + B + C + D del enunciado, las cuatro
+  Estacion ambiental: temperatura, humedad, luz y display  (simulador)
+               Las cuatro variantes: A + B + C + D
   ============================================================================
-  Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
-  Profesor   : Luis Bessewell Feliz
-  Estudiante : Cristian Carrera - Matricula 2024-1932
-  Institucion: Instituto Tecnologico de Las Americas (ITLA)
+  Autor : Cristian Carrera
 
-  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
-  para depurar, documentar y estructurar este codigo. El montaje fisico, la
-  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
-  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+  Se uso asistencia de IA (Claude) para depurar y documentar. El montaje, la
+  calibracion y las pruebas sobre la placa son propios.
   Entorno    : simulador Wokwi (Arduino Cloud NO tiene simulador; ver el .md)
-  Valor      : 8 puntos
 
   ============================================================================
   QUE CUBRE (las cuatro opciones a la vez)
@@ -92,7 +86,7 @@
   2.2k si se ve palido, 470 si se ve muy oscuro. Queda fijo, pero se lee.
 
   Y si no hay ninguna de las dos, se pone USAR_LCD en false y se entregan las
-  opciones A, B y C, que es mas de lo que pide el enunciado.
+  variantes A, B y C, que ya es mas de lo necesario.
 
   ============================================================================
   INVESTIGACION PREVIA 5: ¿SOPORTA ARDUINO HILOS Y TAREAS?
@@ -105,7 +99,7 @@
      Paralelo    -> varias tareas se ejecutan A LA VEZ        (no: 1 nucleo)
      Distribuido -> tareas en MAQUINAS distintas, por mensajes (si, con red)
 
-  Esta practica lo EXIGE: hay que leer el DHT cada 2 s, leer la luz cada
+  Este programa lo EXIGE: hay que leer el DHT cada 2 s, leer la luz cada
   200 ms, refrescar la pantalla cada 500 ms y hacer sonar un S.O.S. cuyos
   simbolos duran 150 o 450 ms. Todo a la vez. Con delay() la pantalla se
   congelaria mientras suena la alarma.
@@ -198,14 +192,14 @@ const int PIN_ZUMBADOR = 8;
 const bool ZUMBADOR_PASIVO = false;
 
 // ---------------------------------------------------------------------------
-// ¿HAY PANTALLA CONECTADA?  (opcion D del enunciado)
+// ¿HAY PANTALLA CONECTADA?  (la variante con display)
 //
 // El LCD necesita un potenciometro para el contraste: el pin V0 pide un
 // voltaje intermedio y sin el la pantalla se ve toda blanca. Sin potenciometro
 // hay dos salidas:
 //
 //   a) Dejar esto en false. Las opciones A, B y C siguen funcionando enteras,
-//      y el enunciado pide UNA de las cuatro, asi que ya se cumple de sobra.
+//      y con una sola de las cuatro ya bastaba, asi que va de sobra.
 //
 //   b) Sustituir el potenciometro por una resistencia fija entre V0 y GND
 //      (empezar por 1k; si se ve muy palido probar 2.2k, si muy oscuro 470).
@@ -296,16 +290,16 @@ void setup() {
 
   if (USAR_LCD) {
     lcd.begin(16, 2);
-    lcd.print(F("SmartSalud ITLA"));
+    lcd.print(F("Estacion ambiental"));
     lcd.setCursor(0, 1);
     lcd.print(F("2024-1932"));
   }
 
   dht.begin();
 
-  Serial.println(F("== Tarea 4: temperatura, humedad, luz y display =="));
-  Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
-  Serial.println(F("Opciones A + B + C + D del enunciado"));
+  Serial.println(F("== Estacion ambiental =="));
+  Serial.println(F("Cristian Carrera"));
+  Serial.println(F("Temperatura + humedad + luz + display"));
   Serial.println();
 
   // Prueba de los tres colores: comprueba el cableado del RGB de un vistazo.
@@ -439,7 +433,7 @@ void tareaLuzYSonido(unsigned long ahora) {
       break;
 
     case ZUMBIDO:
-      // Tono CONTINUO mientras dure el estado, como pide el enunciado.
+      // Tono CONTINUO mientras dure el estado.
       // Llamar a tone() repetidamente con la misma frecuencia no reinicia
       // nada, asi que es seguro hacerlo en cada vuelta.
       sonar(800);

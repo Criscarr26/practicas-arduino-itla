@@ -1,22 +1,17 @@
 // =============================================================================
-// TAREA 5 - Leer desde C# lo que sensa el Arduino   (parte 2 de 2)
+// Telemetria por puerto serie  -  lector en C#
 // =============================================================================
-// Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
-// Profesor   : Luis Bessewell Feliz
-// Estudiante : Cristian Carrera - Matricula 2024-1932
-// Institucion: Instituto Tecnologico de Las Americas (ITLA)
+// Autor : Cristian Carrera
 //
-// Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
-// para depurar, documentar y estructurar este codigo. El montaje fisico, la
-// calibracion, las pruebas sobre la placa y la explicacion del video son propios.
-// El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+// Se uso asistencia de IA (Claude) para depurar y documentar. El montaje, la
+// calibracion y las pruebas sobre la placa son propios.
 //
 // Se conecta al Arduino por el puerto serie, recibe las lecturas del sensor de
 // distancia, las muestra en vivo, las guarda en un CSV y al terminar saca un
 // informe con estadisticas.
 //
 // La parte 1 es el sketch de la placa, en la carpeta de al lado:
-//     Tarea5_Distancia_Serial/Tarea5_Distancia_Serial.ino
+//     firmware_arduino/firmware_arduino.ino
 //
 // -----------------------------------------------------------------------------
 // COMO SE EJECUTA
@@ -52,7 +47,7 @@
 //     Arduino  ->  sensa y avisa
 //     C#       ->  recibe, guarda y analiza
 //
-// En clase el profesor lo planteo con el ejemplo de una maquina de coser: poner
+// La idea viene del ejemplo de una maquina de coser: poner
 // un sensor y medir "cuanto se detiene, que tan rapido hace". Eso es lo que
 // calcula el informe del final.
 //
@@ -92,8 +87,8 @@ static class Program
         Console.OutputEncoding = Encoding.UTF8;
 
         Console.WriteLine(new string('=', 66));
-        Console.WriteLine("TAREA 5 - Lectura del sensor de distancia desde C#");
-        Console.WriteLine("Cristian Carrera - 2024-1932 - ITLA");
+        Console.WriteLine("Telemetria por puerto serie - lector en C#");
+        Console.WriteLine("Cristian Carrera");
         Console.WriteLine(new string('=', 66));
         Console.WriteLine();
 
@@ -223,7 +218,7 @@ static class Program
         if (Lecturas.Count == 0)
         {
             Console.WriteLine("No llego ningun dato valido. Comprueba que subiste el sketch");
-            Console.WriteLine("Tarea5_Distancia_Serial a la placa.");
+            Console.WriteLine("firmware_arduino a la placa.");
             return 1;
         }
 
@@ -366,7 +361,7 @@ static class Program
         }
 
         // --- La maquina: en marcha o detenida -------------------------------
-        // Esto es lo que el profesor planteo con el ejemplo de la maquina de
+        // Esto es lo del ejemplo de la maquina de
         // coser: medir cuanto trabaja y cuanto se detiene.
         int enMarcha = Lecturas.Count(l => l.Estado == "EN_MARCHA");
         int detenida = total - enMarcha;

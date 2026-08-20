@@ -1,17 +1,12 @@
 /*
   ============================================================================
-  TAREA 3 (VERSION FISICA) - Detector de distancia que manda continuar o parar
+  Sensor de distancia con aviso sonoro proporcional
   ============================================================================
-  Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
-  Profesor   : Luis Bessewell Feliz
-  Estudiante : Cristian Carrera - Matricula 2024-1932
-  Institucion: Instituto Tecnologico de Las Americas (ITLA)
-  Placa      : Elegoo UNO R3 (compatible Arduino UNO)
+  Autor : Cristian Carrera
+  Placa : Elegoo UNO R3 (compatible Arduino UNO)
 
-  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
-  para depurar, documentar y estructurar este codigo. El montaje fisico, la
-  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
-  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+  Se uso asistencia de IA (Claude) para depurar y documentar. El montaje, la
+  calibracion y las pruebas sobre la placa son propios.
 
   ============================================================================
   LOS PINES SON LOS DEL MONTAJE, NO AL REVES
@@ -28,13 +23,13 @@
   ============================================================================
   POR QUE ESTA VERSION NO LLEVA MOTOR
   ============================================================================
-  No consegui el motor a tiempo y lo negocie con el profesor antes de la
-  entrega. Lo que se evalua es el objetivo, no la pieza: medir la distancia y
-  decidir cuando algo debe CONTINUAR y cuando debe DETENERSE. El profesor
-  autorizo sustituir el motor por una señal sonora.
+  No tenia un servo a mano, asi que resolvi el mismo objetivo con lo que si
+  tenia. Lo que importa es el objetivo, no la pieza concreta: medir la
+  distancia y decidir cuando algo debe CONTINUAR y cuando debe DETENERSE.
+  Aqui ese papel lo hacen dos zumbadores en lugar de un motor.
 
   Este sketch NO usa la libreria Servo. Si el IDE pide instalar algo de
-  motores, es que esta abierto el sketch de la carpeta Tarea3_Distancia_Motor,
+  motores, es que esta abierto el sketch de la carpeta sensor_distancia_servo,
   que sirve solo para el simulador.
 
   ============================================================================
@@ -62,7 +57,7 @@
   POR QUE EL AVISO LLEGA SOLO HASTA 1 METRO Y NO HASTA 4
   -----------------------------------------------------
   El sensor mide hasta 400 cm, pero repartir el ritmo por todo ese rango no
-  sirve de nada en la practica: al probarlo con la mano sobre la mesa, entre
+  sirve de nada en la practica: probandolo con la mano sobre la mesa, entre
   10 y 50 cm, TODO caia en el tramo mas rapido de la escala y no se notaba
   ninguna diferencia. El oido no distingue 56 ms de 112 ms.
 
@@ -152,9 +147,9 @@
                     loop() indefinidamente.
 
   ============================================================================
-  ANALISIS DEL SOLAPE DE RANGOS DEL ENUNCIADO
+  ANALISIS DEL SOLAPE DE LOS RANGOS
   ============================================================================
-  El enunciado da los cuatro criterios en porcentajes del alcance del sensor.
+  La especificacion de partida da los cuatro criterios en porcentajes del alcance del sensor.
   Con los 400 cm de la hoja de datos, en centimetros son:
 
     Criterio 1   95% a 5%    ->  380 a 20 cm   motor en marcha, LED fijo
@@ -168,7 +163,7 @@
       recorrido util cae a la vez en dos criterios.
     - El 3 y el 4 se solapan entre ellos en la franja de 104 a 100 cm.
     - Entre 20 y 16 cm ya no aplica el 1, pero si el 4.
-    - Por debajo de 16 cm el enunciado no dice nada.
+    - Por debajo de 16 cm no queda criterio que aplicar.
 
   REGLA DE RESOLUCION APLICADA: manda el criterio MAS CERCANO. Cuando una
   distancia cae en varios, gana el de la franja mas proxima al obstaculo,
@@ -176,9 +171,9 @@
   cumple el criterio 3 y el 4 a la vez, y lo que hay que hacer es lo que pide
   el 4, que es el que avisa de mas peligro.
 
-  COMO SE TRADUCE EN ESTA VERSION FISICA. El profesor autorizo sustituir el
-  motor, asi que el "motor en marcha" pasa a ser el estado EN MARCHA/DETENIDA
-  que se publica y se oye, y el "LED fijo" pasa a ser el zumbador de tono fijo:
+  COMO SE TRADUCE EN ESTA VERSION FISICA. Aqui no hay motor, asi que el
+  "motor en marcha" pasa a ser el estado EN MARCHA/DETENIDA que se publica y
+  se oye, y el "LED fijo" pasa a ser el zumbador de tono fijo:
 
     Criterio 1  ->  zonas LEJOS y MEDIA: EN MARCHA, el zumbador fijo callado
     Criterio 2  ->  FUERA_DE_RANGO (sin eco): los dos callados, DETENIDA
@@ -186,7 +181,7 @@
     Criterio 4  ->  zona CERCA (menos de 104 cm): ritmo rapido y el zumbador
                     fijo sonando, que es el "sonido particular" que se pide
 
-  La version con servo de Tarea3_Distancia_Motor implementa los cuatro
+  La version con servo de sensor_distancia_servo implementa los cuatro
   criterios en su forma literal, con motor y LED. Esta los cumple con los
   medios que hay en el montaje real.
 
@@ -238,7 +233,7 @@
   hilos de verdad. Lo que se hace es multitarea COOPERATIVA: loop() ofrece el
   turno a cada tarea miles de veces por segundo y cada una decide si le toca
   mirando millis(). Esa es la diferencia entre concurrencia y ejecucion
-  secuencial, que es justamente el tema de la asignatura.
+  secuencial, y es lo que permite medir y sonar al mismo tiempo.
 
   El tutorial tampoco filtra las lecturas; aqui se toma la mediana de tres,
   para que un rebote raro no acelere el pitido sin motivo.
@@ -354,8 +349,8 @@ void setup() {
 
   digitalWrite(PIN_TRIG, LOW);
 
-  Serial.println(F("== Tarea 3: detector de distancia (version fisica) =="));
-  Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
+  Serial.println(F("== Sensor de distancia (version fisica) =="));
+  Serial.println(F("Cristian Carrera"));
   Serial.println();
 
   // Se imprimen los pines al arrancar: si algun dia algo no responde, lo
@@ -396,7 +391,7 @@ void tareaMedirDistancia(unsigned long ahora) {
   // responde enseguida cuando la mano se acerca de golpe.
   intervaloActual = intervaloPorDistancia(distancia);
 
-  // Aqui esta la decision que pide el enunciado: continuar o detenerse.
+  // Aqui esta la decision de fondo: continuar o detenerse.
   enMarcha = (zonaActual == ZONA_LEJANA || zonaActual == ZONA_MEDIA);
 }
 

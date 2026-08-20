@@ -1,17 +1,12 @@
 /*
   ============================================================================
-  RETO 1 - Encender y apagar una luz LED en Arduino
+  Parpadeo de un LED
   ============================================================================
-  Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
-  Profesor   : Luis Bessewell Feliz
-  Estudiante : Cristian Carrera - Matricula 2024-1932
-  Institucion: Instituto Tecnologico de Las Americas (ITLA)
+  Autor : Cristian Carrera
 
-  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
-  para depurar, documentar y estructurar este codigo. El montaje fisico, la
-  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
-  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
-  Entorno    : simulador Wokwi (placa Arduino UNO)
+  Se uso asistencia de IA (Claude) para depurar y documentar. El montaje, la
+  calibracion y las pruebas sobre la placa son propios.
+  Entorno : simulador Wokwi (placa Arduino UNO)
 
   ============================================================================
   LA SENTENCIA INVESTIGADA
@@ -51,11 +46,11 @@
   El ojo deja de distinguir parpadeos por encima de unos 25 Hz. Por eso la
   pausa tiene que ser de al menos unas decenas de milisegundos.
 
-  NOTA IMPORTANTE PARA LAS PRACTICAS SIGUIENTES:
+  NOTA IMPORTANTE PARA LOS PROYECTOS SIGUIENTES:
   delay() BLOQUEA. Mientras dura, el programa no hace absolutamente nada mas:
   no lee sensores, no atiende botones. Aqui es aceptable porque el programa
   tiene una sola tarea. En cuanto haya dos cosas que atender a la vez habra
-  que sustituirlo por millis(), como se hace en las practicas 3, 4 y 5.
+  que sustituirlo por millis(), como se hace en los proyectos con sensores.
 
   ============================================================================
   MONTAJE
@@ -86,8 +81,8 @@ void setup() {
   // La sentencia investigada: declarar el pin como SALIDA.
   pinMode(PIN_LED, OUTPUT);
 
-  Serial.println(F("== Reto 1: encender y apagar un LED =="));
-  Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
+  Serial.println(F("== Parpadeo de un LED =="));
+  Serial.println(F("Cristian Carrera"));
   Serial.println();
 }
 

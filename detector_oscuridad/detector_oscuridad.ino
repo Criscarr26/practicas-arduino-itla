@@ -1,20 +1,15 @@
 /*
   ============================================================================
-  TAREA 4 - Detector de ausencia de luz  (OPCION C del enunciado)
+  Detector de oscuridad que emite S.O.S.
   ============================================================================
-  Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
-  Profesor   : Luis Bessewell Feliz
-  Estudiante : Cristian Carrera - Matricula 2024-1932
-  Institucion: Instituto Tecnologico de Las Americas (ITLA)
-  Placa      : Elegoo UNO R3 (compatible Arduino UNO)
+  Autor : Cristian Carrera
+  Placa : Elegoo UNO R3 (compatible Arduino UNO)
 
-  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
-  para depurar, documentar y estructurar este codigo. El montaje fisico, la
-  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
-  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
+  Se uso asistencia de IA (Claude) para depurar y documentar. El montaje, la
+  calibracion y las pruebas sobre la placa son propios.
 
   ============================================================================
-  QUE PIDE LA OPCION C, TEXTUAL
+  EL OBJETIVO, TEXTUAL
   ============================================================================
   "Medidor de ausencia o no de luz: Solo emitir el sonido del S.O.S. cuando no
    exista luz en el entorno o ambiente en donde se pruebe o ejecute la
@@ -23,7 +18,7 @@
   Eso es todo: una magnitud que se mide, una condicion que se evalua, y un
   S.O.S. que suena mientras esa condicion se cumpla.
 
-  El enunciado plantea cuatro opciones -A temperatura, B humedad, C luz, y D
+  El planteamiento original ofrecia cuatro variantes -A temperatura, B humedad, C luz, y D
   cualquiera de esas mas un display- y pide realizar UNA. Se eligio la C.
 
   ============================================================================
@@ -224,7 +219,7 @@
   LED 13, que si siguen el patron Morse.
 
   Total: cuatro cables y dos resistencias. El zumbador ya estaba en el pin 9
-  de la practica anterior, asi que se añaden la LDR y el LED del pin 8.
+  de otro montaje, asi que solo se añaden la LDR y el LED del pin 8.
 
   Ninguna libreria. Nada que instalar.
   ============================================================================
@@ -315,8 +310,8 @@ void setup() {
   pinMode(PIN_LED_EXTERNO, OUTPUT);
   // Las entradas analogicas no necesitan pinMode para leerlas.
 
-  Serial.println(F("== Tarea 4 - Opcion C: detector de ausencia de luz =="));
-  Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
+  Serial.println(F("== Detector de oscuridad =="));
+  Serial.println(F("Cristian Carrera"));
   Serial.println();
   Serial.print(F("Entra en alarma por debajo de "));   Serial.println(UMBRAL_ENTRA_OSCURO);
   Serial.print(F("Sale de la alarma por encima de ")); Serial.println(UMBRAL_SALE_OSCURO);

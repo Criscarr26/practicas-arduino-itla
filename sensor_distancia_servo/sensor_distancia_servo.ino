@@ -1,18 +1,12 @@
 /*
   ============================================================================
-  TAREA 3 - Detector de distancia que gobierna un motor, un LED y un buzzer
+  Sensor de distancia que gobierna un servo  (simulador)
   ============================================================================
-  Asignatura : Inteligencia Artificial e Internet de las Cosas (2026-C-2)
-  Profesor   : Luis Bessewell Feliz
-  Estudiante : Cristian Carrera - Matricula 2024-1932
-  Institucion: Instituto Tecnologico de Las Americas (ITLA)
-  Placa      : Elegoo UNO R3 (compatible Arduino UNO)
+  Autor : Cristian Carrera
+  Placa : Elegoo UNO R3 (compatible Arduino UNO)
 
-  Declaracion de uso de IA: se uso asistencia de inteligencia artificial (Claude)
-  para depurar, documentar y estructurar este codigo. El montaje fisico, la
-  calibracion, las pruebas sobre la placa y la explicacion del video son propios.
-  El profesor autorizo el uso de IA siempre que se declare y se sepa explicar.
-  Valor      : 8 puntos
+  Se uso asistencia de IA (Claude) para depurar y documentar. El montaje, la
+  calibracion y las pruebas sobre la placa son propios.
 
   ============================================================================
   INVESTIGACION PREVIA 1: ESTRUCTURAS DE CONTROL EN ARDUINO
@@ -141,7 +135,7 @@
      Existe un port de FreeRTOS para AVR, y placas como el ESP32 traen
      FreeRTOS integrado con DOS nucleos, donde si hay paralelismo real.
 
-  POR QUE ESTA PRACTICA OBLIGA A ELLO:
+  POR QUE ESTE PROGRAMA OBLIGA A ELLO:
   El programa tiene que hacer cuatro cosas con ritmos distintos AL MISMO
   TIEMPO: medir la distancia, mover el servo, parpadear el LED y pitar. Si
   se programara con delay(), mientras el LED espera su parpadeo el sensor
@@ -149,14 +143,14 @@
   en todo el programa.
 
   ============================================================================
-  LOS CUATRO CRITERIOS DEL ENUNCIADO, Y COMO SE RESUELVE SU SOLAPAMIENTO
+  LOS CUATRO CRITERIOS, Y COMO SE RESUELVE SU SOLAPAMIENTO
   ============================================================================
-  Con un maximo de 400 cm, los porcentajes del enunciado dan:
+  Con un maximo de 400 cm, esos porcentajes dan:
 
       95% = 380 cm      50% = 200 cm      26% = 104 cm
        5% =  20 cm      25% = 100 cm       4% =  16 cm
 
-  Los rangos del enunciado se SOLAPAN y hay que decidir una interpretacion:
+  Los rangos se SOLAPAN y hay que decidir una interpretacion:
 
     - El criterio 3 (25%-50%) y el criterio 4 (4%-26%) se pisan entre 100 y
       104 cm.
@@ -206,7 +200,7 @@ const int PIN_ZUMBADOR = 8;
 const int PIN_LED      = 13;
 
 // ---------------------------------------------------------------------------
-// Parametros del sensor y umbrales derivados del enunciado
+// Parametros del sensor y umbrales derivados del alcance del sensor
 // ---------------------------------------------------------------------------
 const float DISTANCIA_MAXIMA = 400.0;   // cm, hoja de datos del HC-SR04
 
@@ -234,7 +228,7 @@ const int TONO_SIRENA_A = 1800;  // sirena de dos tonos, zona cercana
 const int TONO_SIRENA_B = 1200;
 
 // ---------------------------------------------------------------------------
-// Las cuatro zonas del enunciado, como tipo enumerado.
+// Las cuatro zonas, como tipo enumerado.
 // Darles nombre en vez de usar 0, 1, 2, 3 hace el switch legible y evita
 // errores tontos al comparar.
 // ---------------------------------------------------------------------------
@@ -278,8 +272,8 @@ void setup() {
 
   digitalWrite(PIN_TRIG, LOW);
 
-  Serial.println(F("== Tarea 3: detector de distancia con motor =="));
-  Serial.println(F("Cristian Carrera - 2024-1932 - ITLA"));
+  Serial.println(F("== Sensor de distancia con servo =="));
+  Serial.println(F("Cristian Carrera"));
   Serial.println();
   Serial.println(F("Umbrales calculados sobre 400 cm de alcance maximo:"));
   Serial.print(F("  95% = ")); Serial.print(UMBRAL_95); Serial.println(F(" cm"));
@@ -288,8 +282,8 @@ void setup() {
   Serial.print(F("   4% = ")); Serial.print(UMBRAL_04); Serial.println(F(" cm"));
   Serial.println();
 
-  // El enunciado pide que el motor arranque encendido en cuanto se transfiere
-  // el codigo, siempre que la distancia este en rango. Se enciende aqui y la
+  // El motor tiene que arrancar encendido en cuanto se transfiere el codigo,
+  // siempre que la distancia este en rango. Se enciende aqui y la
   // primera medicion decidira si sigue o no.
   encenderMotor();
 }
@@ -473,8 +467,8 @@ void tareaLuzYSonido(unsigned long ahora) {
         ledEncendido = !ledEncendido;
         digitalWrite(PIN_LED, ledEncendido);
 
-        // El sonido sigue EXACTAMENTE el ritmo de la luz, como pide el
-        // enunciado: suena cuando el LED se enciende y calla cuando se apaga.
+        // El sonido sigue EXACTAMENTE el ritmo de la luz, a proposito:
+        // suena cuando el LED se enciende y calla cuando se apaga.
         if (ledEncendido) tone(PIN_ZUMBADOR, TONO_LENTO);
         else              noTone(PIN_ZUMBADOR);
       }
